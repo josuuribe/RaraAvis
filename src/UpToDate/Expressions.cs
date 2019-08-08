@@ -72,7 +72,7 @@ namespace UpToDate
             object d = null;
             var a = new { A = new { B = new { C = d } } };
 
-            Console.WriteLine($"NULL = {a?.A?.B?.C?.ToString()}"); // Eternal null propagation
+            Console.WriteLine($"{nameof(a.A.B.C)} = {a?.A?.B?.C?.ToString()}"); // Eternal null propagation
         }
 
         public void Interpolation(decimal value)
@@ -91,5 +91,25 @@ namespace UpToDate
                 return i;
             return -1;
         }
+
+        public void Discard(string integer)
+        {
+            bool b = int.TryParse(integer, out int _);
+            if (b)
+            {
+                Console.WriteLine("Can be casted.");
+            }
+            else
+            {
+                Console.WriteLine("It can not be casted.");
+            }
+        }
+
+        public double ReturnDiscard(double value)
+        {
+            var _ = Math.Sqrt(value++);
+            return Math.Ceiling(_);
+        }
+
     }
 }

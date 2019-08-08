@@ -19,7 +19,8 @@ namespace UpToDate
             expressions.NullPropagationOperator();
             expressions.Interpolation(100.435678M);
             expressions.NameOf("Ok");
-
+            expressions.Discard("5");
+            System.Console.WriteLine(expressions.ReturnDiscard(9.5));
 
 
             System.Console.WriteLine(await Header("Function"));
