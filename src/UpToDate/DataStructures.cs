@@ -24,18 +24,19 @@ namespace UpToDate
         public void Tuple(string a, string b)
         {// C# 7
             var tuple = (a, b); // Unnamed tuple
-            System.Console.WriteLine(tuple.a);
-            System.Console.WriteLine(tuple.b);
+
+            Console.WriteLine(tuple.a);
+            Console.WriteLine(tuple.b);
 
             // C# 7.1
             var tupleNamed = (key: a, value: b); // Named tuple
-            System.Console.WriteLine(tupleNamed.key);
-            System.Console.WriteLine(tupleNamed.value);
+            Console.WriteLine(tupleNamed.key);
+            Console.WriteLine(tupleNamed.value);
 
             // C# 7.3
             var tupleEquality1 = (key: "1", value: "1.1");
-            var tupleEquality2 = (key: "1", value: "1.1");
-            System.Console.WriteLine(tupleEquality1 == tupleEquality2 ? "Equals" : "Not Equals"); // Compare values by position, both equals
+            var tupleEquality2 = (value: "1.1", key: "1");
+            Console.WriteLine(tupleEquality1 == tupleEquality2 ? "Equals" : "Not Equals"); // Compare values by position, both equals
         }
 
         public (int, double) Average(int[] values)
@@ -45,14 +46,14 @@ namespace UpToDate
 
         public void Deconstruction()
         {
-            var avg = Average(new int[] { 1, 2 });
-            System.Console.WriteLine($"For {avg.Item1} items the average is {avg.Item2}");
+            var items = Average(new int[] { 1, 2 });
+            System.Console.WriteLine($"For {items.Item1} elements the average is {items.Item2}");
         }
 
         public void Deconstruct(out string firstName, out string lastName) // Magic method will be used when deconstruction
         {// It can be also an extension method
-            firstName = FirstName;
-            lastName = LastName;
+            firstName = FirstName.ToLower();
+            lastName = LastName.ToLower();
         }
 
         public string CallPrivateProtected()
@@ -63,6 +64,58 @@ namespace UpToDate
         private protected string Example()
         {// This method can only be called by parent in the same assembly
             return "Private protected";
+        }
+
+        public readonly struct Person
+        {
+            public string Name { get; }
+            public string Surname { get; }
+
+            public Person(string name, string surName)
+            {
+                this.Name = name;
+                this.Surname = surName;
+            }
+        }
+
+        public struct Animal
+        {
+            private string specie;
+            public string Genre { get; set; }
+            public string Specie
+            {
+                get
+                {
+                    return specie.ToLower();
+                }
+                set
+                {
+                    specie = value;
+                }
+            }
+
+            public Animal(string genre, string specie)
+            {
+                this.Genre = genre;
+                this.specie = specie;
+            }
+
+            public readonly string FullString()
+            {
+                return $"{Genre} -> {Specie}";
+            }
+        }
+
+        public interface IActions
+        {
+            public double Walk();
+
+            public double Run();
+
+            public double Flight (int miles)
+            {
+                return miles * 1.9;
+            }
         }
     }
 }

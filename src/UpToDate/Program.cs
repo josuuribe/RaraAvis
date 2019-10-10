@@ -21,16 +21,31 @@ namespace UpToDate
             expressions.NameOf("Ok");
             expressions.Discard("5");
             System.Console.WriteLine(expressions.ReturnDiscard(9.5));
+            Console.WriteLine(expressions.ConvertUsingIf("Element"));
+            Console.WriteLine(expressions.ConvertUsingIf(5));
+            Console.WriteLine(expressions.ConvertUsingIf(4.98));
+            Console.WriteLine(expressions.ConvertToStringUsingSwitch("Element"));
+            Console.WriteLine(expressions.ConvertToStringUsingSwitch(5));
+            Console.WriteLine(expressions.ConvertToStringUsingSwitch(4.98));
+            Console.WriteLine(expressions.ConvertToStringUsingSwitchWhen("Element"));
+            Console.WriteLine(expressions.ConvertToStringUsingSwitchWhen(6));
+            Console.WriteLine(expressions.ConvertToStringUsingSwitchWhen(4));
+            Console.WriteLine(expressions.ConvertToStringUsingSwitchWhen(4.98));
+            Console.WriteLine(expressions.ConvertToStringUsingSwitchWhen(string.Empty));
+            expressions.RaiseException("100");
 
 
-            System.Console.WriteLine(await Header("Function"));
+
+            Console.WriteLine(await Header("Function"));
             Functions functions = new Functions();
-            functions.WriteMessage("Ejemplo");
-            string name = "John";
-            string surname = "Doe";
-            functions.OutMethod(out name, out surname);
-            System.Console.WriteLine(name);
-            System.Console.WriteLine(surname);
+            functions.WriteContextCaller("Example");
+            functions.OutMethod(out string name, out string surname);
+            Console.WriteLine(name);
+            Console.WriteLine(surname);
+            var resAuto = functions.LocalFunctionAuto(4, 6);
+            Console.WriteLine(resAuto);
+            var resLocal = functions.LocalFunctionAuto(4, 6);
+            Console.WriteLine(resLocal);
             ReferenceExample();
             functions.InParameter(66);
             ReferenceExampleReadonly();
@@ -41,27 +56,19 @@ namespace UpToDate
             DataStructures dataStructures1 = new DataStructures();
             dataStructures1.Tuple("alpha", "beta");
             DataStructures dataStructures2 = new DataStructures("John", "Doe");
-            var (first, last) = dataStructures2;
-            System.Console.WriteLine(first);
-            System.Console.WriteLine(last);
+            var (f, l) = dataStructures2;
+            System.Console.WriteLine(f);
+            System.Console.WriteLine(l);
             dataStructures1.CallPrivateProtected();
-
-
-
-            System.Console.WriteLine(await Header("ControlStructures"));
-            ControlStructures structureControl = new ControlStructures();
-            Console.WriteLine(structureControl.ConvertToStringUsingIf("Element"));
-            Console.WriteLine(structureControl.ConvertToStringUsingIf(5));
-            Console.WriteLine(structureControl.ConvertToStringUsingIf(4.98));
-            Console.WriteLine(structureControl.ConvertToStringUsingSwitch("Element"));
-            Console.WriteLine(structureControl.ConvertToStringUsingSwitch(5));
-            Console.WriteLine(structureControl.ConvertToStringUsingSwitch(4.98));
-            Console.WriteLine(structureControl.ConvertToStringUsingSwitchWhen("Element"));
-            Console.WriteLine(structureControl.ConvertToStringUsingSwitchWhen(6));
-            Console.WriteLine(structureControl.ConvertToStringUsingSwitchWhen(4));
-            Console.WriteLine(structureControl.ConvertToStringUsingSwitchWhen(4.98));
-            Console.WriteLine(structureControl.ConvertToStringUsingSwitchWhen(string.Empty));
-            structureControl.RaiseException("100");
+            dataStructures1.Deconstruction();
+            DataStructures.Person person = new DataStructures.Person("John", "Doe");
+            Console.WriteLine(person.Name);
+            Console.WriteLine(person.Surname);
+            DataStructures.Animal animal = new DataStructures.Animal("Leopard", "Big");
+            Console.WriteLine(animal.Genre);
+            Console.WriteLine(animal.Specie);
+            animal.Specie = "Unknown";
+            Console.WriteLine(animal.FullString());
         }
 
         private static void ReferenceExample()

@@ -4,13 +4,13 @@ namespace UpToDate
 {
     public class Functions
     {
-        public void WriteMessage(string message,
-    [System.Runtime.CompilerServices.CallerMemberName] string memberName = "",
-    [System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "",
-    [System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
+        public void WriteContextCaller(string messageBefore,
+        [System.Runtime.CompilerServices.CallerMemberName] string memberName = "",
+        [System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "",
+        [System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
         {// C# 5
-            Console.WriteLine("message: " + message);
-            Console.WriteLine("member name: " + memberName);
+            Console.WriteLine("parameter: " + messageBefore);
+            Console.WriteLine("caller: " + memberName);
             Console.WriteLine("source file path: " + sourceFilePath);
             Console.WriteLine("source line number: " + sourceLineNumber);
         }
@@ -32,10 +32,18 @@ namespace UpToDate
         }
 
 
-        public int LocalFunctions(int a, int b)
+        public int LocalFunctionAuto(int a, int b)
         {
             int Sum(int a1, int b1) => a1 + b1; // Local function auto-implemented
 
+            return Sum(a, b);
+        }
+
+        public int LocalFunctionRegular(int a, int b)
+        {
+            int Sum(int a1, int b1) {
+                return a1 + b1; // Regular function
+            }
             return Sum(a, b);
         }
 
