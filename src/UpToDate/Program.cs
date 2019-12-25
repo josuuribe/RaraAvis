@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using static UpToDate.DataStructures;
 
 namespace UpToDate
 {
@@ -33,8 +34,28 @@ namespace UpToDate
             Console.WriteLine(expressions.ConvertToStringUsingSwitchWhen(4.98));
             Console.WriteLine(expressions.ConvertToStringUsingSwitchWhen(string.Empty));
             expressions.RaiseException("100");
-
-
+            Console.WriteLine($"Color: {expressions.ExpressionPatterns()}");
+            Expressions.Building p1 = new Expressions.Building()
+            {
+                Age = 10,
+                State = "Spain"
+            };
+            Console.WriteLine(expressions.PropertyExpression(p1));
+            Console.WriteLine(Expressions.SwitchTuple("one", "second"));
+            Console.WriteLine(expressions.PositionalPattern(p1));
+            Console.WriteLine(expressions.ShortUsing().Age);
+            await foreach (var number in Expressions.GenerateWord("z"))
+            {
+                Console.WriteLine(number);
+            }
+            Console.WriteLine(expressions.Indexes(^1)); // The last one
+            Console.WriteLine(expressions.Ranges(0..3).Length); // The first three
+            Console.WriteLine(expressions.Ranges(^2..^1).Length); // The penultimate element ("Four")
+            Console.WriteLine(expressions.Ranges(..).Length); // All ("One","Two","Three","Four","Five")
+            Console.WriteLine(expressions.Ranges(..2).Length); // First two ("One","Two")
+            Console.WriteLine(expressions.Ranges(3..).Length); // From third till end ("Four", "Five")
+            Console.WriteLine(expressions.Ranges(1..4).Length); // From second till third ("Two", "Three", "Four")
+            Console.WriteLine(expressions.NullCoalescenceAsignment());
 
             Console.WriteLine(await Header("Function"));
             Functions functions = new Functions();
@@ -49,7 +70,7 @@ namespace UpToDate
             ReferenceExample();
             functions.InParameter(66);
             ReferenceExampleReadonly();
-
+            Console.WriteLine(functions.Father());
 
 
             System.Console.WriteLine(await Header("DataStructures"));
@@ -61,14 +82,27 @@ namespace UpToDate
             System.Console.WriteLine(l);
             dataStructures1.CallPrivateProtected();
             dataStructures1.Deconstruction();
-            DataStructures.Person person = new DataStructures.Person("John", "Doe");
+            DataStructures.Person person = new Person("John", "Doe");
             Console.WriteLine(person.Name);
             Console.WriteLine(person.Surname);
-            DataStructures.Animal animal = new DataStructures.Animal("Leopard", "Big");
+            DataStructures.Animal animal = new Animal("Leopard", "Big");
             Console.WriteLine(animal.Genre);
             Console.WriteLine(animal.Specie);
             animal.Specie = "Unknown";
             Console.WriteLine(animal.FullString());
+
+
+            Lion lion = new Lion();
+            Console.WriteLine(lion.Run());
+            Console.WriteLine(lion.Walk());
+            IActions ilion = lion as IActions;
+            Console.WriteLine(ilion.Flight(100));// It's necessary cast to ILion to get access to Flight().
+            Eagle eagle = new Eagle();
+            Console.WriteLine(eagle.Run());
+            Console.WriteLine(eagle.Walk());
+            IActions ieagle = eagle as IActions;
+            IActions.SetTravel(35);
+            Console.WriteLine(ieagle.Flight(10));// It's necessary cast to ILion to get access to Flight().
         }
 
         private static void ReferenceExample()

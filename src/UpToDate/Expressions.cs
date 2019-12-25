@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Drawing;
+using System.Threading.Tasks;
 
 namespace UpToDate
 {
@@ -176,6 +177,118 @@ namespace UpToDate
             catch (ArgumentException ae)
             {// Any other ArgumentException not included before
                 System.Console.WriteLine($"Error => {ae.Message}");
+            }
+        }
+
+        public enum Options { First, Second, Third, Fourth };
+        public Color ExpressionPatterns() =>
+            Console.BackgroundColor switch
+            {
+                ConsoleColor.Red => Color.FromArgb(255, 0, 0),
+                ConsoleColor.Green => Color.FromArgb(0, 255, 0),
+                ConsoleColor.Blue => Color.FromArgb(0, 0, 255),
+                ConsoleColor.Black => Color.FromArgb(255, 255, 255),
+                _ => throw new ArgumentException("Invalid value")
+            };
+
+
+        public int PropertyExpression(Building p) =>
+            p switch
+            {
+                { Age: 10 } => p.Age * 1,
+                { Age: 20 } => p.Age * 2,
+                _ => 30,
+            };
+
+        public static string SwitchTuple(string first, string second)
+            => (first, second) switch
+            {
+                ("one", "two") => "Wins second",
+                ("two", "one") => "Wins first",
+                (_, _) => "tie"
+            };
+
+        public string PositionalPattern(Building building)
+            => building switch
+            {
+                (0, "") => "No born",
+                (15, "A") => "Young female",
+                (25, "B") => "Too much older man",
+                (_, _) => "No human",
+                _ => "Unknown"
+            };
+
+        public Building ShortUsing()
+        {
+            using Building b = new Building()
+            {
+                Age = 20,
+                State = "WA"
+            };
+            b.Age = 40;
+            return b;
+        }
+
+        public object NullCoalescenceAsignment()
+        {
+            object a = null;
+            a ??= "1";
+            return a;
+        }
+
+        public string Indexes(Index i)
+        {
+            var numbers = new string[]
+            {
+                "One",
+                "Two",
+                "Three",
+                "Four",
+                "Five"
+            };
+
+            return numbers[i];
+        }
+
+        public string[] Ranges(Range r)
+        {
+            var numbers = new string[]
+            {
+                "One",
+                "Two",
+                "Three",
+                "Four",
+                "Five"
+            };
+
+            return numbers[r];
+        }
+
+
+        public static async IAsyncEnumerable<string> GenerateWord(string a)
+        {
+            for (int i = 65; i < 68; i++)
+            {
+                await Task.Delay(100);
+                a += (char)i;
+                yield return a;
+            }
+        }
+
+
+        public class Building : IDisposable
+        {
+            public int Age { get; set; }
+            public string State { get; set; }
+            public void Deconstruct(out int age, out string state) // Magic method will be used when deconstruction
+            {// It can be also an extension method
+                age = Age;
+                state = State.ToLower();
+            }
+
+            public void Dispose()
+            {
+                Age = 0;
             }
         }
     }

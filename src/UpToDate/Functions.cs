@@ -52,5 +52,14 @@ namespace UpToDate
             //o = 3;
             Console.WriteLine(o);
         }
+
+        public int Father()
+        {
+            int a = 1;
+            int b = 2;
+            return Son(a, b);
+
+            static int Son(int c, int d) => c + d;
+        }
     }
 }
