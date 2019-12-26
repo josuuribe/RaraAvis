@@ -1,7 +1,10 @@
-﻿using System;
+﻿#nullable disable
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
+using UpToDate.Helpers;
 
 namespace UpToDate
 {
@@ -16,7 +19,7 @@ namespace UpToDate
         public string Name
         {
             get => name;
-            set => name = value;
+            set => name = value + "\r\n";
         }
 
         // C# 6 Property Initializers
@@ -29,7 +32,7 @@ namespace UpToDate
         public void TernaryCondition()
         {
             var a = 10;
-            var b = a > 10 ? true : false;
+            var b = a > 10 ? 12 : 8;
 
             Console.WriteLine(b);
         }
@@ -55,17 +58,19 @@ namespace UpToDate
             Console.WriteLine(b);
         }
 
-        public void NullCoalescingThrow()
+        public object NullCoalescingThrow()
         {// C# 7
             try
             {
                 object a = null;
                 object b = a ?? throw new ArgumentNullException("Object null."); // If null you can also throw an exception
+                return b;
             }
             catch (ArgumentNullException ane)
             {
                 Console.WriteLine(ane.Message);
             }
+            return null;
         }
 
         public void NullPropagationOperator()
@@ -275,21 +280,5 @@ namespace UpToDate
             }
         }
 
-
-        public class Building : IDisposable
-        {
-            public int Age { get; set; }
-            public string State { get; set; }
-            public void Deconstruct(out int age, out string state) // Magic method will be used when deconstruction
-            {// It can be also an extension method
-                age = Age;
-                state = State.ToLower();
-            }
-
-            public void Dispose()
-            {
-                Age = 0;
-            }
-        }
     }
 }

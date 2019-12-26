@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using UpToDate.Helpers;
 using static UpToDate.DataStructures;
 
 namespace UpToDate
 {
-    class Program
+    static class Program
     {
         static async Task Main(string[] args)
         {
@@ -35,7 +36,7 @@ namespace UpToDate
             Console.WriteLine(expressions.ConvertToStringUsingSwitchWhen(string.Empty));
             expressions.RaiseException("100");
             Console.WriteLine($"Color: {expressions.ExpressionPatterns()}");
-            Expressions.Building p1 = new Expressions.Building()
+            Building p1 = new Building()
             {
                 Age = 10,
                 State = "Spain"
@@ -82,10 +83,10 @@ namespace UpToDate
             System.Console.WriteLine(l);
             dataStructures1.CallPrivateProtected();
             dataStructures1.Deconstruction();
-            DataStructures.Person person = new Person("John", "Doe");
+            Person person = new Person("John", "Doe");
             Console.WriteLine(person.Name);
             Console.WriteLine(person.Surname);
-            DataStructures.Animal animal = new Animal("Leopard", "Big");
+            Animal animal = new Animal("Leopard", "Big");
             Console.WriteLine(animal.Genre);
             Console.WriteLine(animal.Specie);
             animal.Specie = "Unknown";
@@ -103,6 +104,36 @@ namespace UpToDate
             IActions ieagle = eagle as IActions;
             IActions.SetTravel(35);
             Console.WriteLine(ieagle.Flight(10));// It's necessary cast to ILion to get access to Flight().
+
+            System.Console.WriteLine(await Header("Extra"));
+            Extra extra = new Extra();
+            var a = extra.CreateWithNullName();
+            Console.WriteLine(a.Name);
+            var nulls = extra.NullsInParameters();
+            Console.WriteLine(nulls);
+            var find = extra.Find<string>(null!);
+            Console.WriteLine(find);
+            Person?[] people = null!;
+            extra.Swap(ref people);
+            Console.WriteLine(people.Length);
+            string? str = null;
+            if (extra.IsNullOrEmpty(str))
+            {
+                Console.WriteLine(str.Length);
+            }
+            string? versionStr = "0.0.0.0";
+            extra.TryParse(versionStr, out Version version);
+            Console.WriteLine(version.Major);
+            CustomQueue<string> queue = new CustomQueue<string>();
+            if (!queue.TryDequeue(out var result))
+                Console.WriteLine(result.Length);
+            string? toLower = null;
+            var lower = extra.ToLower(toLower);
+            Console.WriteLine(lower.Length);
+            string lowerException = "As";
+            extra.ThrowExceptionIfLower(lowerException);
+            extra.AssertIsLower(false);
+
         }
 
         private static void ReferenceExample()

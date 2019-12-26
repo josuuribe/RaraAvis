@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable disable
+
+using System;
 
 namespace UpToDate
 {
@@ -49,7 +51,6 @@ namespace UpToDate
 
         public void InParameter(in int o)// Because of 'in' o can not be modified
         {
-            //o = 3;
             Console.WriteLine(o);
         }
 
