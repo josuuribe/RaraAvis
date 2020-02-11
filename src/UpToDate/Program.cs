@@ -131,7 +131,7 @@ namespace UpToDate
             var lower = extra.ToLower(toLower);
             Console.WriteLine(lower.Length);
             string lowerException = "As";
-            extra.ThrowExceptionIfLower(lowerException);
+            extra.ThrowLowerException(lowerException);
             extra.AssertIsLower(false);
 
         }
