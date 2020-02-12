@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="FluentApi.Database">
+    <Position X="2.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>DatabaseConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FluentApi.Group">
+    <Position X="6" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>DatabaseConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FluentApi.DatabaseConfiguration">
+    <Position X="4.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>DatabaseConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FluentApi.Role">
+    <Position X="6" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>DatabaseConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FluentApi.Login">
+    <Position X="2.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEQAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>DatabaseConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FluentApi.Server">
+    <Position X="4.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAQACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DatabaseConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FluentApi.Right">
+    <Position X="4.25" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DatabaseConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FluentApi.DatabaseExtensions" Collapsed="true">
+    <Position X="6" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DatabaseExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FluentApi.DatabaseBuilder">
+    <Position X="7.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAQAAIAAAEAAAAACAAAIABAAAAIgAEAgAAACAAIAkAA=</HashCode>
+      <FileName>DatabaseBuilder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Enum Name="FluentApi.Permission">
+    <Position X="2.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>DatabaseConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,56 +1,56 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Interface Name="FluentApi.IConnectionBuilder" Collapsed="true">
+  <Interface Name="FluentApi.IConnectionBuilder">
     <Position X="3.5" Y="3.25" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>IConnectionBuilder.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="FluentApi.IDatabaseBuilder" Collapsed="true">
-    <Position X="5.5" Y="1.75" Width="1.5" />
+  <Interface Name="FluentApi.IDatabaseBuilder">
+    <Position X="5.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>IDatabaseBuilder.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="FluentApi.IUsersBuilder" Collapsed="true">
-    <Position X="7.5" Y="3.25" Width="1.5" />
+  <Interface Name="FluentApi.IUsersBuilder">
+    <Position X="7.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAIAAAA=</HashCode>
       <FileName>IUsersBuilder.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="FluentApi.ICredentialBuilder" Collapsed="true">
-    <Position X="9.25" Y="4.5" Width="2" />
+  <Interface Name="FluentApi.ICredentialBuilder">
+    <Position X="9.5" Y="4.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
       <FileName>IUsersBuilder.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="FluentApi.IUserBuilder" Collapsed="true">
-    <Position X="7.75" Y="6" Width="1.5" />
+  <Interface Name="FluentApi.IUserBuilder">
+    <Position X="7.75" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
       <FileName>IUsersBuilder.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="FluentApi.IGroupBuilder" Collapsed="true">
+  <Interface Name="FluentApi.IGroupBuilder">
     <Position X="6" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
       <FileName>IUsersBuilder.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="FluentApi.IRoleBuilder" Collapsed="true">
-    <Position X="4.25" Y="6" Width="1.5" />
+  <Interface Name="FluentApi.IRoleBuilder">
+    <Position X="4.25" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>IUsersBuilder.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="FluentApi.IRightBuilder" Collapsed="true">
-    <Position X="4.25" Y="7.25" Width="1.5" />
+  <Interface Name="FluentApi.IRightBuilder">
+    <Position X="4.25" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>IUsersBuilder.cs</FileName>

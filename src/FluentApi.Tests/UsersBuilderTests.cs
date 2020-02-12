@@ -12,18 +12,18 @@ namespace FluentApi.Tests
         [Fact]
         public void CreateBuilder_WithCompleteUser_ReturnsValidJson()
         {
-            IUsersBuilder builder = DatabaseBuilder
-                .Create()
-                .AddLogin()
-                .WithCredential(
-                    username: "login",
-                    password: "password")
-                .AndRole(
-                    database: "acme")
-                .AddRight(
-                    permission: "read")
-                .AddRight(
-                    permission: "write");
+        IUsersBuilder builder = DatabaseBuilder
+            .Create()
+            .AddLogin()
+            .WithCredential(
+                username: "login",
+                password: "password")
+            .AndRole(
+                database: "acme")
+            .AddRight(
+                permission: "read")
+            .AddRight(
+                permission: "write");
             string json = builder.Save();
 
             var obj = JsonConvert.DeserializeObject<Database>(json);
