@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DocumentCode</name>
+    </assembly>
+    <members>
+        <member name="T:Documentation.Animal">
+            <summary>
+		Full documentation for Animal class.
+	</summary> 
+        </member>
+        <member name="M:Documentation.Father.LookForSon(Documentation.Son)">
+            <summary>
+            Looks for son.
+            </summary>
+            <param name="s">The s.</param>
+            <returns>Double son.</returns>
+        </member>
+        <member name="T:Documentation.Son">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Documentation.Person">
+            <summary>
+            It defines a person completely.
+            <list type="t">
+            <listheader>
+            <term>Person</term>
+            <description>Different people.</description>
+            </listheader>
+            <item>
+            <term>Normal.</term>
+            <description>Person from this planet.</description>
+            </item>
+            <item>
+            <term>Alien.</term>
+            <description>Thing from another planet.</description>
+            </item>
+            </list>
+            </summary>
+            <remarks>
+            This is a critical class due to his abstract aspect.
+            </remarks>
+        </member>
+        <member name="P:Documentation.Person.Name">
+            <summary>
+            Name used for <c>Person</c> object.
+            It can be used as <code> Person p = new Person();</code>
+            </summary>
+        </member>
+        <member name="P:Documentation.Person.SecondName">
+            <summary>
+            It defines a SecondName for the user, it is used normally with <c>Name</c> as 
+            <example>
+            <code>string s = Name + SecondName;</code>
+            </example>
+            </summary>
+        </member>
+        <member name="P:Documentation.Person.Address">
+            <summary>
+            The address property represents the employee's address.
+            </summary>
+            <value>
+            The Address property must not contain extended chars.
+            </value>
+        </member>
+        <member name="M:Documentation.Person.#ctor">
+            <summary>
+            Base constructor por person object.
+            </summary>
+        </member>
+        <member name="M:Documentation.Person.DuplicateName">
+            <summary>
+            gggg
+            </summary>
+            <returns>DDDDD</returns>
+        </member>
+        <member name="M:Documentation.Person.ComplexName(System.String)">
+            <summary>
+            Create a complex name.
+            </summary>
+            <param name="secondName">The second name to append.</param>
+        </member>
+        <member name="M:Documentation.Person.ReverseName">
+            <summary>
+            Reverses a name.
+            </summary>
+            <permission cref="T:System.Security.PermissionSet">Everyone can access this method.</permission>
+            <returns>Reversed name.</returns>
+        </member>
+        <member name="M:Documentation.Person.ClonePersonWithDifferentName(Documentation.Person,System.String)">
+            <summary>
+            Clones a person with the <paramref name="name"/> supplied.
+            </summary>
+            <param name="originalPerson">Person to be cloned.</param>
+            <param name="name">new name.</param>
+        </member>
+        <member name="M:Documentation.Person.ToString">
+            <summary>
+            It writes a brief description about itself use 
+            <see cref="M:System.Console.WriteLine(System.String)"/> to write to console.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Documentation.Person.GetHashCode">
+            <summary>
+            Overrides original, <seealso cref="M:Documentation.Person.GetHashCode"/>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Documentation.Person.Equals(System.Object)">
+            <summary>
+            Overrides original.
+            <seealso cref="M:Documentation.Person.Equals(System.Object)"/>.
+            </summary>
+            <param name="obj">Objet to compare.</param>
+            <returns>True or false.</returns>
+        </member>
+        <member name="M:Documentation.Person.CreateArray``1(System.Int32)">
+            <summary>
+            Create a empty array.
+            </summary>
+            <typeparam name="T">Type for the array, must be <c>Person</c></typeparam>
+            <param name="n">Array size.</param>
+            <returns>An empty array.</returns>
+        </member>
+        <member name="M:Documentation.Person.CreateList``1(System.Int32)">
+            <summary>
+            Create an empty list.
+            </summary>
+            <typeparam name="T">Type for the list.</typeparam>
+            <param name="n">List size.</param>
+            <returns>An empty list of <typeparamref name="T" />.</returns>
+        </member>
+        <member name="T:Documentation.Airplane">
+            <summary>
+            <see cref="T:Documentation.Robot`1" />
+            </summary>
+        </member>
+        <member name="T:Documentation.Car">
+            <summary>
+            <see cref="T:Robot`1"/>
+            </summary>
+        </member>
+        <member name="T:Documentation.Robot`1">
+            <summary>
+            <see cref="T:Documentation.Airplane"/>
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Documentation.Robot`1.Dispose">
+            <summary>
+            <see cref="T:System.IDisposable"/>
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<CustomDoc>
+    <CustomMember name="Animal">
+	<summary>
+		Full documentation for Animal class.
+	</summary>
+    </CustomMember>
+</CustomDoc>
