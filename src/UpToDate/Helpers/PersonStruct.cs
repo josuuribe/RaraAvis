@@ -1,11 +1,11 @@
 ﻿namespace UpToDate.Helpers
 {
-    public readonly struct Person
+    public readonly struct PersonStruct
     {
         public string Name { get; }
         public string Surname { get; }
 
-        public Person(string name, string surName)
+        public PersonStruct(string name, string surName)
         {
             this.Name = name;
             this.Surname = surName;

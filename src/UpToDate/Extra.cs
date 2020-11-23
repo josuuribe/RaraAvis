@@ -18,16 +18,16 @@ namespace UpToDate
         public string NullsInParameters()
         {
             var sorcerer = new Sorcerer<float, string>();
-            Person? p = null;
+            PersonStruct? p = null;
             sorcerer.LowerName(ref p);
-            return p.Value.Name;
+            return p == null ? "Null" : p.Value.Name;
         }
 
         [return: MaybeNull]
         public Z Find<Z>(Z s)
         {
             Z z = default(Z);
-            return s!.GetHashCode() > 100 ? s : z;
+            return s == null ? z : s;
         }
 
         public void Swap<Z>([NotNull]ref Z[]? z)

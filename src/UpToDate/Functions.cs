@@ -1,6 +1,7 @@
 ﻿#nullable disable
 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace UpToDate
 {
@@ -61,6 +62,15 @@ namespace UpToDate
             return Son(a, b);
 
             static int Son(int c, int d) => c + d;
+        }
+
+        public bool PatternMatchFunction(string a) =>
+            a[0] is (>= 'a' and <= 'z') or (>= 'A' and <= 'Z' and not default(char));
+
+        [ModuleInitializer]
+        public static void Start()
+        {
+            System.Console.WriteLine("I'm the first one");
         }
     }
 }

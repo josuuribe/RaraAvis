@@ -280,5 +280,12 @@ namespace UpToDate
             }
         }
 
+        public Building IsNull(Building b)
+        {
+            if(b is null)
+                return new();
+            else
+                return b;
+        }
     }
 }

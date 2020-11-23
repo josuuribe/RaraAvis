@@ -38,7 +38,7 @@ namespace UpToDate.Helpers
 
 
 
-        public string LowerName([DisallowNull]ref Person? person)
+        public string LowerName([DisallowNull]ref PersonStruct? person)
         {
             person = null;
             return "Cleared";
