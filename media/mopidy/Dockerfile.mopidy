@@ -1,0 +1,33 @@
+FROM ubuntu:latest
+
+# 1. Environment vars
+ARG DEBIAN_FRONTEND=noninteractive
+ARG TZ=Europe/Madrid
+ENV TZ=$TZ
+
+RUN apt-get update && apt-get -y upgrade
+RUN apt-get install -y wget
+RUN apt-get install -y gnupg2 gnupg gnupg1
+RUN apt-get install -y python3-dev
+RUN apt-get install -y python3-pip
+RUN apt-get install -y libffi-dev
+RUN wget -q -O - https://apt.mopidy.com/mopidy.gpg | apt-key add -
+RUN wget -q -O /etc/apt/sources.list.d/mopidy.list https://apt.mopidy.com/buster.list
+RUN apt-get update
+RUN apt-get install -y mopidy
+RUN apt-get install -y libspotify-dev
+RUN python3 -m pip install pyspotify
+RUN python3 -m pip install Mopidy-Local
+RUN python3 -m pip install Mopidy-Iris
+RUN python3 -m pip install Mopidy-Mobile
+RUN python3 -m pip install Mopidy-Spotify
+RUN python3 -m pip install Mopidy-Mopify
+
+WORKDIR /mnt/mopidy
+RUN chown -R mopidy /mnt/mopidy
+USER mopidy
+RUN chmod -R a+rwx /mnt/mopidy
+EXPOSE 6680
+VOLUME /mnt/mopidy
+
+CMD ["mopidy", "--config", "/mnt/mopidy/mopidy.conf"]

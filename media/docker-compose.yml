@@ -1,0 +1,35 @@
+version: "3"
+services:
+  mopidy:
+    container_name: mopidy
+    image: joursain/raspberry-mopidy
+    ports:
+      - 6680:6680
+    volumes:
+      - /home/pi/media/mopidy:/mnt/mopidy
+  transmission:
+    container_name: transmission
+    image: joursain/raspberry-transmission
+    ports:
+      - 9091:9091
+      - 51413:51413
+    volumes:
+      - /home/pi/media/transmission:/mnt/transmission
+    environment:
+      - RA_UUID=1000
+      - RA_GUID=1000
+  plex:
+    container_name: plex
+    image: ghcr.io/linuxserver/plex
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=105
+      - PGID=106
+      - VERSION=docker
+      - PLEX_CLAIM=claim-mdN9WvzBpTZbwQ4Rkx--
+    volumes:
+      - /home/pi/media/plex/config:/config
+      #- /mnt/media/plex/tv:/tv
+      - /home/pi/media/movies:/movies
+    restart: unless-stopped

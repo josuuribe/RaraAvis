@@ -1,0 +1,33 @@
+FROM ubuntu:latest
+
+RUN apt-get update && apt-get -y upgrade && apt-get install -y sudo
+RUN apt-get install -y --no-install-recommends software-properties-common 
+RUN add-apt-repository ppa:transmissionbt/ppa  
+RUN apt-get update 
+RUN apt-get install -y transmission-cli transmission-common transmission-daemon 
+
+#RUN adduser --disabled-password --gecos '' debian-transmission
+RUN usermod -a -G sudo debian-transmission
+#RUN adduser debian-transmission sudo
+#RUN usermod -d /mnt/transmission debian-transmission
+#RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+#USER debian-transmission
+
+WORKDIR /mnt/transmission
+RUN chown -R debian-transmission:debian-transmission /mnt/transmission
+#USER debian-transmission
+RUN chmod -R 755 /mnt/transmission
+RUN usermod -d /mnt/transmission debian-transmission
+COPY scripts/ /
+#COPY settings.json .
+
+#USER debian-transmission
+EXPOSE 9091
+VOLUME /mnt/transmission
+VOLUME /mnt/transmission/watch
+VOLUME /mnt/transmission/download
+VOLUME /mnt/transmission/temp
+
+ENTRYPOINT ["/bin/sh", "/entry_point.sh"]
+#CMD ["/bin/bash", "/entry_point.sh", "/usr/bin/transmission-daemon", "-g", "/mnt/transmission", "-f"]
+CMD ["/usr/bin/transmission-daemon", "-g", "/mnt/transmission", "-f", "-x", "/mnt/transmission/trans.PID"]
