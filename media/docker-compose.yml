@@ -2,14 +2,20 @@ version: "3"
 services:
   mopidy:
     container_name: mopidy
-    image: joursain/raspberry-mopidy
+    image: raraavis/mopidy
+    build:
+      context: ./mopidy
+      dockerfile: Dockerfile.mopidy
     ports:
       - 6680:6680
     volumes:
       - /home/pi/media/mopidy:/mnt/mopidy
   transmission:
     container_name: transmission
-    image: joursain/raspberry-transmission
+    image: raraavis/transmisssion
+    build:
+      context: ./transmission
+      dockerfile: Dockerfile.transmission
     ports:
       - 9091:9091
       - 51413:51413
@@ -18,6 +24,8 @@ services:
     environment:
       - RA_UUID=1000
       - RA_GUID=1000
+      - RA_SRVC=debian-transmission
+      - RA_FLDR=/mnt/transmission
   plex:
     container_name: plex
     image: ghcr.io/linuxserver/plex
