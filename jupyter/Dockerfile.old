@@ -1,0 +1,43 @@
+FROM ubuntu:latest
+
+# 1. Environment vars
+ARG DEBIAN_FRONTEND=noninteractive
+ARG TZ=Europe/Madrid
+ENV TZ=$TZ
+ENV NODE_OPTIONS=--max-old-space-size=768
+
+# 2. Install packages
+# 2.1 Update system and install Jupyter
+RUN apt-get update && apt-get -y upgrade && \
+        apt-get install -y --no-install-recommends tzdata && \
+
+        apt-get install -y --no-install-recommends libzbar-dev libzbar0 && \
+        apt-get install -y --no-install-recommends build-essential python3.6 python3-pip python3-dev && \
+        apt-get install -y --no-install-recommends git && \
+
+        pip3 -q install --upgrade pip && \
+        pip3 install jupyter && \
+# 2.2 Build git extension
+        apt-get install -y --no-install-recommends nodejs && \
+        apt-get install -y --no-install-recommends npm && \
+        pip3 install jupyterlab && \
+        pip3 install --upgrade jupyterlab-git && \
+        jupyter lab build --minimize=False && \
+# 2.3 Clean
+        apt-get clean && \
+        rm -rf /var/lib/apt/lists/* && \
+        rm -rf /tmp/*
+
+RUN mkdir tensorflow
+
+# 3. Add jupyter user
+RUN adduser --disabled-password --gecos '' jupyter
+RUN adduser jupyter sudo
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+USER jupyter
+WORKDIR /home/jupyter/
+RUN chmod a+rwx /home/jupyter/
+
+# 4. Folder to download git files
+RUN mkdir /home/jupyter/notebooks
+
