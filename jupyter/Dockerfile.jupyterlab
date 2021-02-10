@@ -28,8 +28,6 @@ RUN apt-get update && apt-get -y upgrade && \
         rm -rf /var/lib/apt/lists/* && \
         rm -rf /tmp/*
 
-RUN mkdir tensorflow
-
 # 3. Add jupyter user
 RUN adduser --disabled-password --gecos '' jupyter
 RUN adduser jupyter sudo
@@ -40,4 +38,7 @@ RUN chmod a+rwx /home/jupyter/
 
 # 4. Folder to download git files
 RUN mkdir /home/jupyter/notebooks
+
+# 5. Execute jupyter
+CMD ["jupyter", "lab", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--allow-root", "--notebook-dir=/home/jupyter/notebooks", "--NotebookApp.token=''", "--NotebookApp.password=''"]
 
