@@ -7,8 +7,8 @@ LABEL "guru.raraavis.description"="Raspberry Pi 3 image with JupyterLab"
 
 # 1. Environment vars
 ARG DEBIAN_FRONTEND=noninteractive
+ARG NODE_OPTIONS=--max-old-space-size=768
 ENV NODE_VERSION=15
-ENV NODE_OPTIONS=--max-old-space-size=768
 ENV JUPYTER_ID=1000
  
 # 2. Install packages

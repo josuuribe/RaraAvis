@@ -4,7 +4,7 @@ FROM arm32v7/debian:latest
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=Europe/Madrid
 ENV TZ=$TZ
-ARG PACKAGE
+#ENV FILE=/builders
 #ENV NODE_OPTIONS=--max-old-space-size=768
 
 # 2. Install packages
@@ -24,6 +24,7 @@ RUN apt-get update  && \
 	libzbar0 \
         build-essential \ 
 	python3-dev \
+	protobuf-compiler \
 #	python3-venv \
 #	python3-yaml \
 #	python3-setuptools \
@@ -40,6 +41,7 @@ RUN     python3 -m pip config --global set global.extra-index-url https://www.pi
 RUN	python3 -m pip install --upgrade pyyaml
 #RUN	python3 -m pip install --upgrade $PACKAGE
 
-# 6. Execute jupyter
-CMD ["/bin/bash"]
+COPY builders/*.sh ./builders
 
+# 6. Execute jupyter
+CMD ["/bin/bash", -c"", "/scripts/build.sh"]

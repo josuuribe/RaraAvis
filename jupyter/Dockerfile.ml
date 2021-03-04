@@ -3,9 +3,9 @@ FROM arm32v7/debian:latest
 # 1. Environment vars
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=Europe/Madrid
-ARG NODE_VERSION=15
+ARG NODE_OPTIONS=--max-old-space-size=768
+ENV NODE_VERSION=15
 ENV TZ=$TZ
-ENV NODE_OPTIONS=--max-old-space-size=768
 
 # 2. Install packages
 # 2.1 Update system and install Jupyter
@@ -130,4 +130,3 @@ RUN source env/bin/activate && \
 
 # 6. Execute jupyter
 #CMD ["jupyter", "lab", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--allow-root", "--notebook-dir=/home/jupyter/notebooks", "--NotebookApp.token=''", "--NotebookApp.password=''"]
-
