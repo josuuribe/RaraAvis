@@ -10,13 +10,15 @@ ARG DEBIAN_FRONTEND=noninteractive
 ARG NODE_OPTIONS=--max-old-space-size=768
 ENV NODE_VERSION=15
 ENV JUPYTER_ID=1000
- 
+
 # 2. Install packages
 # 2.1 Update system and install necessary packages
 RUN     apt-get update && \
         apt-get install -y --no-install-recommends \
         python3-dev \
         python3-venv \
+	libatlas-base-dev \
+#	dask[complete] \
         git \
         curl && \
         curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - && \
@@ -30,7 +32,8 @@ RUN	python3 -m pip config --global set global.extra-index-url https://www.piwhee
 RUN     python3 -m pip config set global.extra-index-url https://www.piwheels.org/simple
 # 2.4 Install pip libraries and jupyter
 RUN     python3 -m pip install --upgrade \
-        virtualenv \
+        conda \
+	virtualenv \
         ipykernel \
         jupyter \
         jupyterlab \
@@ -47,6 +50,9 @@ RUN     chown -R jupyter /mnt/jupyter
 RUN     chmod -R 755 /mnt/jupyter
 
 USER    jupyter
+RUN	curl http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-armv7l.sh && \
+	md5sum Miniconda3-latest-Linux-armv7l.sh && \
+	Miniconda3-latest-Linux-armv7l.sh -b
 
 # 4. Folder to download git files
 VOLUME /mnt/jupyter/notebooks

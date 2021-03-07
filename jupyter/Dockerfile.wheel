@@ -14,6 +14,10 @@ RUN apt-get update  && \
 	libopenblas-dev \
 	libblas-dev \
 	libatlas-base-dev \
+	libjpeg-dev \
+	libgeos-dev \
+	clang \
+	llvm \
 	m4 \
 	cmake \
 	cython \
@@ -25,6 +29,7 @@ RUN apt-get update  && \
         build-essential \ 
 	python3-dev \
 	protobuf-compiler \
+	libssl-dev \
 #	python3-venv \
 #	python3-yaml \
 #	python3-setuptools \

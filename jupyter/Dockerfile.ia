@@ -7,13 +7,7 @@ SHELL ["/bin/bash", "-c"]
 
 RUN mkdir /mnt/jupyter/ml # https://github.com/moby/moby/issues/36677
 WORKDIR /mnt/jupyter/ml
-#COPY $TF1 /mnt/jupyter/ml
-
-#RUN python3 -m pip config set global.extra-index-url https://www.piwheels.org/simple
-#RUN python3 -m pip config list
-
 COPY /ml ./ml
-
 RUN python3 -m venv env 
 RUN python3 -m pip config list
 RUN source env/bin/activate && \
@@ -21,7 +15,8 @@ RUN source env/bin/activate && \
         python3 -m pip install \ 
 	ipykernel \
 	tensorflow \
-	torch \
+	dask[complete] \
+#	torch \
 	keras \
 	numpy \
 	scipy \
@@ -35,8 +30,29 @@ RUN source env/bin/activate && \
 	python3 -m ipykernel install --user --display-name='Python 3 Machine Learning' --name=envpy3ml && \
 	deactivate
 
+RUN mkdir /mnt/jupyter/ml_az # https://github.com/moby/moby/issues/36677
+WORKDIR /mnt/jupyter/ml_az
+COPY /ml_az ./ml_az
+RUN python3 -m venv env
+RUN python3 -m pip config list
+RUN source env/bin/activate && \
+        python3 -m pip install --upgrade pip setuptools wheel virtualenv-clone && \
+	python3 -m clonevirtualenv ../ml/venv .ml_az/venv && \
+        python3 -m pip install \
+        ipykernel \
+	virtualenv-clone \
+	azureml-train-automl \
+	opendp-smartnoise \
+	azureml-explain-model \
+	azureml-defaults \
+	azureml-interpret && \
+        python3 -m pip install --upgrade ml_az/*.whl && \
+        python3 -m ipykernel install --user --display-name='Python 3 Azure Machine Learning' --name=envpy3ml && \
+        deactivate
+
 RUN mkdir /mnt/jupyter/generalist
 WORKDIR /mnt/jupyter/generalist
+COPY /generalist ./generalist
 RUN python3 -m venv env
 RUN source env/bin/activate && \
         python3 -m pip install \
