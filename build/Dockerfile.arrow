@@ -1,0 +1,84 @@
+#FROM arm32v7/debian:latest
+FROM debian:latest
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG REPO_HOME=/repos
+ARG ARROW_HOME=$REPO_HOME/dist
+ARG LD_LIBRARY_PATH=$ARROW_HOME/lib:$LD_LIBRARY_PATH
+ARG PYARROW_WITH_PARQUET=1
+ARG PARQUET_TEST_DATA=$REPO_HOME/arrow/cpp/submodules/parquet-testing/data
+ARG ARROW_TEST_DATA=$REPO_HOME/arrow/testing/data
+ARG ARROW_BUILD_TYPE=release
+ARG ARROW_TAG=apache-arrow-3.0.0
+
+RUN     apt-get update -y && apt-get install -y libjemalloc-dev libboost-dev \
+		libboost-filesystem-dev \
+                libboost-system-dev \
+                libboost-regex-dev \
+		make \
+		build-essential \
+		g++ \
+		libgflags-dev \
+		rapidjson-dev \
+		libre2-dev \
+		python3-dev \
+		libatlas-base-dev \
+                python3-dev \
+                autoconf \
+                flex \
+                bison \
+		libgrpc-dev \
+		git && \
+                rm -rf /var/lib/apt/lists/* && \
+                rm -rf /tmp/*
+
+ADD     https://bootstrap.pypa.io/get-pip.py get-pip.py
+RUN     python3 get-pip.py
+RUN     python3 -m pip config --global set global.extra-index-url https://www.piwheels.org/simple
+RUN     python3 -m pip install --upgrade \
+		cmake \
+		wheel \
+                numpy
+
+WORKDIR	$REPO_HOME
+RUN     git clone https://github.com/apache/arrow.git
+WORKDIR	$REPO_HOME/arrow
+RUN	git checkout tags/$ARROW_TAG -b build
+RUN	git submodule init
+RUN	git submodule update
+
+WORKDIR	$REPO_HOME
+RUN	python3 -m pip install -r arrow/python/requirements-build.txt -r arrow/python/requirements-test.txt
+
+WORKDIR	$REPO_HOME/arrow/cpp/build
+RUN	cmake	-DCMAKE_INSTALL_PREFIX=$ARROW_HOME \
+		-DPYTHON3_EXECUTABLE=$(which python3) \ 
+		-DPYTHON_INCLUDE_DIR=$(python3 -c "from distutils.sysconfig import get_python_inc;print(get_python_inc())") \ 
+		-DCMAKE_INSTALL_LIBDIR=lib \ 
+		-DPYTHON_INCLUDE_DIR2=$(python3 -c "from os.path import dirname; from distutils.sysconfig import get_config_h_filename; print(dirname(get_config_h_filename()))") \ 
+		-DARROW_WITH_BZ2=ON \ 
+		-DPYTHON_LIBRARY=$(python3 -c "from distutils.sysconfig import get_config_var;from os.path import dirname,join ; print(join(dirname(get_config_var('LIBPC')),get_config_var('LDLIBRARY')))") \ 
+		-DARROW_WITH_ZLIB=ON \ 
+		-DPYTHON3_NUMPY_INCLUDE_DIRS=$(python3 -c "import numpy; print(numpy.get_include())") \ 
+		-DARROW_WITH_ZSTD=ON \
+		-DPYTHON3_PACKAGES_PATH=$(python3 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())") \	        
+		-DARROW_WITH_LZ4=ON \
+	        -DARROW_WITH_SNAPPY=ON \
+	        -DARROW_WITH_BROTLI=ON \
+	        -DARROW_PARQUET=ON \
+	        -DARROW_PYTHON=ON \
+	        -DARROW_BUILD_TESTS=ON \
+	        ..
+RUN	make -j$(nproc)
+RUN	make install
+
+WORKDIR $REPO_HOME/arrow/python
+RUN	python3 setup.py build_ext --inplace
+RUN	python3 -m pytest pyarrow 2>&1 || echo "Some unit tests have failed"
+RUN	python3 setup.py build_ext --build-type=$ARROW_BUILD_TYPE --bundle-arrow-cpp bdist_wheel
+
+ARG	ARROW_DROP_FOLDER=/dist
+RUN	cp $REPO_HOME/arrow/python/dist/*.whl /drop
+VOLUME	ARROW_DROP_FOLDER
+
+CMD     ["/bin/bash"]
