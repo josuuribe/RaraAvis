@@ -1,33 +1,67 @@
-FROM ubuntu:latest
+# 0. Official armv32 image
+FROM debian:latest
+
+LABEL "guru.raraavis.creator"="blog@raraavis.guru"
+LABEL "guru.raraavis.version"="1.0.0"
+LABEL "guru.raraavis.release-date"="20/03/2021"
+LABEL "guru.raraavis.description"="Raspberry Pi 3 image with Mopidy"
 
 # 1. Environment vars
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=Europe/Madrid
 ENV TZ=$TZ
 
-RUN apt-get update && apt-get -y upgrade
-RUN apt-get install -y wget
-RUN apt-get install -y gnupg2 gnupg gnupg1
-RUN apt-get install -y python3-dev
-RUN apt-get install -y python3-pip
-RUN apt-get install -y libffi-dev
-RUN wget -q -O - https://apt.mopidy.com/mopidy.gpg | apt-key add -
-RUN wget -q -O /etc/apt/sources.list.d/mopidy.list https://apt.mopidy.com/buster.list
-RUN apt-get update
-RUN apt-get install -y mopidy
-RUN apt-get install -y libspotify-dev
-RUN python3 -m pip install pyspotify
-RUN python3 -m pip install Mopidy-Local
-RUN python3 -m pip install Mopidy-Iris
-RUN python3 -m pip install Mopidy-Mobile
-RUN python3 -m pip install Mopidy-Spotify
-RUN python3 -m pip install Mopidy-Mopify
+# 2. Update system and install necessary packages
+RUN	apt-get update && \
+	apt-get install -y \
+		wget \
+		lsb-release \
+		gnupg2 \
+		gnupg \
+		gnupg1 \
+		python3-dev \
+		python3-pip \
+		libffi-dev \
+		gosu \
+		curl \
+		cron && \
+                rm -rf /var/lib/apt/lists/* && \
+                rm -rf /tmp/*
 
+# 3. Add mopidy repository
+RUN	wget -q -O - https://apt.mopidy.com/mopidy.gpg | apt-key add -
+RUN	DEBIAN_CODENAME=`lsb_release -sc` && \
+	wget -vO /etc/apt/sources.list.d/mopidy.list "https://apt.mopidy.com/$DEBIAN_CODENAME.list"
+
+# 4. Install pip packages and Mopidy
+RUN	apt-get update && \
+	apt-get install -y \
+		mopidy \
+		libspotify-dev && \
+        rm -rf /var/lib/apt/lists/* && \
+        rm -rf /tmp/*
+RUN	python3 -m pip install \
+		pyspotify \
+		Mopidy-Local \
+		Mopidy-Iris \
+		Mopidy-Mobile \
+		Mopidy-Spotify \
+		Mopidy-Mopify
+
+# 5. Configure user
+RUN     usermod -d /mnt/mopidy mopidy
+
+# 6. Create folder
 WORKDIR /mnt/mopidy
-RUN chown -R mopidy /mnt/mopidy
-USER mopidy
-RUN chmod -R a+rwx /mnt/mopidy
-EXPOSE 6680
-VOLUME /mnt/mopidy
+COPY    scripts/ scripts/
 
-CMD ["mopidy", "--config", "/mnt/mopidy/mopidy.conf"]
+# 7. Crontab por local scan
+RUN	(crontab -l 2>/dev/null || true; echo "0 */1 * * * /mnt/mopidy/config/mopidy.conf local scan") | crontab -
+
+# 8. Container
+EXPOSE	6680
+VOLUME	/mnt/mopidy/config
+VOLUME	/mnt/mopidy/local
+
+ENTRYPOINT ["/bin/sh", "scripts/entry_point.sh"]
+CMD ["mopidy", "--config", "/mnt/mopidy/config/mopidy.conf"]
