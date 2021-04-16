@@ -1,5 +1,5 @@
-#FROM arm32v7/debian:latest
-FROM debian:latest
+FROM arm32v7/debian:latest
+#FROM debian:latest
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG REPO_HOME=/repos
@@ -77,8 +77,7 @@ RUN	python3 setup.py build_ext --inplace
 RUN	python3 -m pytest pyarrow 2>&1 || echo "Some unit tests have failed"
 RUN	python3 setup.py build_ext --build-type=$ARROW_BUILD_TYPE --bundle-arrow-cpp bdist_wheel
 
-ARG	ARROW_DROP_FOLDER=/dist
-RUN	cp $REPO_HOME/arrow/python/dist/*.whl /drop
-VOLUME	ARROW_DROP_FOLDER
+WORKDIR /drop
+RUN	cp $REPO_HOME/arrow/python/dist/*.whl .
 
 CMD     ["/bin/bash"]
