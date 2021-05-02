@@ -1,33 +1,50 @@
+# 0. Official armv32 image
 FROM ubuntu:latest
 
-RUN apt-get update && apt-get -y upgrade && apt-get install -y sudo
-RUN apt-get install -y --no-install-recommends software-properties-common 
-RUN add-apt-repository ppa:transmissionbt/ppa  
-RUN apt-get update 
-RUN apt-get install -y transmission-cli transmission-common transmission-daemon 
+LABEL "guru.raraavis.creator"="blog@raraavis.guru"
+LABEL "guru.raraavis.version"="1.0.0"
+LABEL "guru.raraavis.release-date"="20/03/2021"
+LABEL "guru.raraavis.description"="Raspberry Pi 3 image with Transmission"
 
-#RUN adduser --disabled-password --gecos '' debian-transmission
-RUN usermod -a -G sudo debian-transmission
-#RUN adduser debian-transmission sudo
-#RUN usermod -d /mnt/transmission debian-transmission
-#RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-#USER debian-transmission
+# 1. Environment vars
+ARG DEBIAN_FRONTEND=noninteractive
+ARG TZ=Europe/Madrid
+ENV TZ=$TZ
 
+# 2. Update system and install necessary packages
+RUN	apt-get update && \
+	apt-get install -y \
+		gosu \
+		software-properties-common \
+		gnupg2 \
+		gnupg \
+                gnupg1 && \
+	        rm -rf /var/lib/apt/lists/* && \
+		rm -rf /tmp/*
+
+# 3. Add transmission repository and install Transmission
+RUN	add-apt-repository ppa:transmissionbt/ppa && \
+	apt-get update && \
+	apt-get install -y \ 
+		transmission-cli \
+		transmission-common \
+		transmission-daemon && \
+		rm -rf /var/lib/apt/lists/* && \
+		rm -rf /tmp/*
+
+# 4. Configure user
+RUN	usermod -d /mnt/transmission debian-transmission
+
+# 5. Create folder
 WORKDIR /mnt/transmission
-RUN chown -R debian-transmission:debian-transmission /mnt/transmission
-#USER debian-transmission
-RUN chmod -R 755 /mnt/transmission
-RUN usermod -d /mnt/transmission debian-transmission
-COPY scripts/ /
-#COPY settings.json .
+COPY	scripts/ scripts/
 
-#USER debian-transmission
-EXPOSE 9091
-VOLUME /mnt/transmission
-VOLUME /mnt/transmission/watch
-VOLUME /mnt/transmission/download
-VOLUME /mnt/transmission/temp
+# 6. Container
+EXPOSE	9091
+VOLUME	/mnt/transmission/config
+VOLUME	/mnt/transmission/watch
+VOLUME	/mnt/transmission/download
+VOLUME	/mnt/transmission/temp
 
-ENTRYPOINT ["/bin/sh", "/entry_point.sh"]
-#CMD ["/bin/bash", "/entry_point.sh", "/usr/bin/transmission-daemon", "-g", "/mnt/transmission", "-f"]
-CMD ["/usr/bin/transmission-daemon", "-g", "/mnt/transmission", "-f", "-x", "/mnt/transmission/trans.PID"]
+ENTRYPOINT ["/bin/sh", "scripts/entry_point.sh"]
+CMD ["/usr/bin/transmission-daemon", "-g", "/mnt/transmission/config", "-f", "-x", "/mnt/transmission/config/trans.PID"]
