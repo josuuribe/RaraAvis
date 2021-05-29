@@ -2,25 +2,43 @@ version: "3"
 services:
   mopidy:
     container_name: mopidy
-    image: raraavis/mopidy
+    image: joursain/raspberry-mopidy
     build:
-      context: ./mopidy
-      dockerfile: Dockerfile.mopidy
+      context: ..
+      dockerfile: media/mopidy/Dockerfile.mopidy
     ports:
-      - 6680:6680
+      - "6680:6680"
     volumes:
-      - /home/pi/media/mopidy:/mnt/mopidy
+      - ${MOPIDY_CONFIG}:/mnt/mopidy/config
+      - ${MOPIDY_LOCAL}:/mnt/mopidy/local
+    environment:
+      - RA_UUID=1000
+      - RA_GUID=1000
+      - RA_SRVC=mopidy
+      - RA_FLDR=/mnt/mopidy
+    devices:
+      - /dev/snd
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://spotify.etxe.local || bash -c 'kill -s 15 -1 && (sleep 10; kill -s 9 -1)'"]
+      interval: 30m
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
   transmission:
     container_name: transmission
-    image: raraavis/transmisssion
+    image: joursain/raspberry-transmisssion
     build:
-      context: ./transmission
-      dockerfile: Dockerfile.transmission
+      context: ..
+      dockerfile: media/transmission/Dockerfile.transmission
     ports:
-      - 9091:9091
-      - 51413:51413
+      - "9091:9091"
+      - "51413:51413"
     volumes:
-      - /home/pi/media/transmission:/mnt/transmission
+      - ${TRANSMISSION_CONFIG}:/mnt/transmission/config
+      - ${TRANSMISSION_TEMP}:/mnt/transmission/temp
+      - ${TRANSMISSION_DOWNLOAD}:/mnt/transmission/download
+      - ${TRANSMISSION_WATCH}:/mnt/transmission/watch
     environment:
       - RA_UUID=1000
       - RA_GUID=1000
@@ -32,12 +50,12 @@ services:
     container_name: plex
     network_mode: host
     environment:
-      - PUID=105
-      - PGID=106
+      - PUID=1000
+      - PGID=1000
       - VERSION=docker
-      - PLEX_CLAIM=claim-mdN9WvzBpTZbwQ4Rkx--
+  #- PLEX_CLAIM= see .env file  
     volumes:
-      - /home/pi/media/plex/config:/config
-      #- /mnt/media/plex/tv:/tv
-      - /home/pi/media/movies:/movies
+      - ${PLEX_CONFIG}:/config
+    #- /mnt/media/plex/tv:/tv      
+      - ${PLEX_MOVIES}:/movies
     restart: unless-stopped
