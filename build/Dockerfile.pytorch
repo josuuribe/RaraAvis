@@ -33,13 +33,13 @@ RUN     python3 -m pip install \
                 mock \
                 pillow
 
-WORKDIR	$REPO_HOME
+WORKDIR $REPO_HOME
 RUN     git clone --recursive https://github.com/pytorch/pytorch.git
 WORKDIR $REPO_HOME/pytorch
 RUN     git checkout tags/$PYTORCH_TAG -b build
 RUN     git submodule update --init --recursive
 
-WORKDIR	$REPO_HOME/pytorch
+WORKDIR $REPO_HOME/pytorch
 RUN     python3 -m pip install -r requirements.txt
 
 RUN     export NO_CUDA=1
@@ -53,7 +53,7 @@ RUN     PATH=/usr/lib/ccache:$PATH
 RUN     python3 setup.py bdist_wheel
 
 WORKDIR /drop
-RUN	cp $REPO_HOME/pytorch/dist/*.whl .
+RUN     cp $REPO_HOME/pytorch/dist/*.whl .
 
 CMD     ["/bin/bash"]
 

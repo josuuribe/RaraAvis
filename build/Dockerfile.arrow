@@ -1,5 +1,4 @@
 FROM arm32v7/debian:latest
-#FROM debian:latest
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG REPO_HOME=/repos
