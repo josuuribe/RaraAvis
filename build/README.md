@@ -22,5 +22,5 @@ docker cp _container_id_:/drop .
 Now, you can stop container:  
 docker container stop _container_id_
 
-It works for Pytorch 1.8.0), anyway you can switch versions using PYTORCH_TAG while build (set as value the same label as exists in Pytorch GitHub repository)
+It works for Pytorch 1.8.0, anyway you can switch versions using PYTORCH_TAG while build (set as value the same label as exists in Pytorch GitHub repository)
 
