@@ -11,7 +11,7 @@ docker container stop _container_id_
 
 It works for Apache 4.0.0 (master) and also for latest stable version (3.0.0) anyway you can switch versions using ARROW_TAG while build (set as value the same label as exists in Arrow GitHub repository)
 
-###Pytorch
+### Pytorch
 
 Execute with:  
 docker run -dit _image_id_
