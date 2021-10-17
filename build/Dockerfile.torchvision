@@ -1,0 +1,49 @@
+FROM arm32v7/debian:latest
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG REPO_HOME=/repos
+ARG VISION_HOME=$REPO_HOME/dist
+ARG VISION_TAG=v0.9.1
+
+RUN     apt-get update && apt-get install -y \
+		libjpeg-dev \
+		zlib1g-dev \
+		libpython3-dev \
+		libavcodec-dev \
+		libavformat-dev \
+		libswscale-dev \
+                cmake \
+                build-essential \
+                python3-dev \
+                git \
+                ccache \
+                ninja-build && \
+                rm -rf /var/lib/apt/lists/* && \
+                rm -rf /tmp/*
+
+ADD     https://bootstrap.pypa.io/get-pip.py get-pip.py
+RUN     python3 get-pip.py
+RUN     python3 -m pip config --global set global.extra-index-url https://www.piwheels.org/simple
+RUN     python3 -m pip install \
+		ninja \
+                pyyaml \
+                typing_extensions \
+                numpy \
+                wheel \
+		future 
+
+WORKDIR	$REPO_HOME
+RUN     git clone --recursive https://github.com/pytorch/vision.git
+WORKDIR $REPO_HOME/vision
+RUN     git checkout tags/$VISION_TAG -b build
+#RUN     git submodule update --init --recursive
+
+WORKDIR	$REPO_HOME/vision
+RUN	python3 setup.py clean
+RUN     python3 setup.py bdist_wheel
+
+WORKDIR drop
+RUN	cp $REPO_HOME/vision/dist/*.whl .
+
+CMD     ["/bin/bash"]
+

@@ -3,7 +3,13 @@ FROM arm32v7/debian:latest
 ARG DEBIAN_FRONTEND=noninteractive
 ARG REPO_HOME=/repos
 ARG PYTORCH_HOME=$REPO_HOME/dist
-ARG PYTORCH_TAG=v1.8.0
+ARG PYTORCH_TAG=v1.8.1
+
+ARG  USE_MKLDNN=OFF
+ARG  USE_NNPACK=ON
+ARG  USE_QNNPACK=ON
+ARG  USE_XNNPACK=ON
+ARG  MAX_JOBS=4
 
 RUN     apt-get update && apt-get install -y \
                 libopenblas-dev \
@@ -41,13 +47,6 @@ RUN     git submodule update --init --recursive
 
 WORKDIR $REPO_HOME/pytorch
 RUN     python3 -m pip install -r requirements.txt
-
-RUN     export NO_CUDA=1
-RUN     export NO_DISTRIBUTED=1
-RUN     export USE_MKLDNN=OFF
-RUN     export USE_NNPACK=ON
-RUN     export USE_QNNPACK=ON
-RUN     export MAX_JOBS=4
 
 RUN     PATH=/usr/lib/ccache:$PATH
 RUN     python3 setup.py bdist_wheel
