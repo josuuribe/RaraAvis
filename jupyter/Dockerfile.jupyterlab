@@ -9,7 +9,7 @@ LABEL "guru.raraavis.description"="Raspberry Pi 3 image with JupyterLab"
 ARG DEBIAN_FRONTEND=noninteractive
 ARG NODE_OPTIONS=--max-old-space-size=768
 ARG TZ=Europe/Madrid
-ENV NODE_VERSION=15
+ENV NODE_VERSION=16
 ENV JUPYTER_ID=1000
 ENV TZ=$TZ
 
@@ -34,7 +34,7 @@ RUN     apt-get update && \
         apt-get install -y --no-install-recommends nodejs && \
         rm -rf /var/lib/apt/lists/* && \
         rm -rf /tmp/*
-RUN	add-apt-repository ppa:deadsnakes/ppa
+#RUN	add-apt-repository ppa:deadsnakes/ppa
 # 2.2 Install pip
 ADD     https://bootstrap.pypa.io/get-pip.py get-pip.py
 RUN	python3 get-pip.py
