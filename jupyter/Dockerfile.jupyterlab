@@ -1,5 +1,5 @@
-# 0. Official armv32 image
-FROM arm32v7/debian:latest 
+# 0. Official debian image
+FROM debian:latest 
 LABEL "guru.raraavis.creator"="blog@raraavis.guru" 
 LABEL "guru.raraavis.version"="1.0.0" 
 LABEL "guru.raraavis.release-date"="28/02/2021" 
@@ -34,7 +34,6 @@ RUN     apt-get update && \
         apt-get install -y --no-install-recommends nodejs && \
         rm -rf /var/lib/apt/lists/* && \
         rm -rf /tmp/*
-#RUN	add-apt-repository ppa:deadsnakes/ppa
 # 2.2 Install pip
 ADD     https://bootstrap.pypa.io/get-pip.py get-pip.py
 RUN	python3 get-pip.py
