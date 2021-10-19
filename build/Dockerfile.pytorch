@@ -1,20 +1,15 @@
 FROM arm32v7/debian:latest
-#FROM debian:latest
 
 ARG DEBIAN_FRONTEND=noninteractive
-ARG NO_CUDA=ON
-ARG NO_DISTRIBUTED=ON
-ARG BUILD_CAFFE2_OPS=OFF
-ARG USE_FBGEMM=OFF
-ARG USE_FAKELOWP=OFF
-ARG BUILD_TEST=OFF
-ARG USE_MKLDNN=OFF
-ARG USE_NNPACK=ON
-ARG USE_XNNPACK=ON
-ARG USE_QNNPACK=ON
-ARG MAX_JOBS=4
-ARG USE_NCCL=OFF
-ARG USE_SYSTEM_NCCL=OFF
+ARG REPO_HOME=/repos
+ARG PYTORCH_HOME=$REPO_HOME/dist
+ARG PYTORCH_TAG=v1.8.1
+
+ARG  USE_MKLDNN=OFF
+ARG  USE_NNPACK=ON
+ARG  USE_QNNPACK=ON
+ARG  USE_XNNPACK=ON
+ARG  MAX_JOBS=4
 
 RUN     apt-get update && apt-get install -y \
                 libopenblas-dev \
@@ -44,18 +39,20 @@ RUN     python3 -m pip install \
                 mock \
                 pillow
 
+WORKDIR $REPO_HOME
 RUN     git clone --recursive https://github.com/pytorch/pytorch.git
-WORKDIR pytorch
-RUN     git checkout tags/v1.8.0 -b build
+WORKDIR $REPO_HOME/pytorch
+RUN     git checkout tags/$PYTORCH_TAG -b build
 RUN     git submodule update --init --recursive
 
+WORKDIR $REPO_HOME/pytorch
 RUN     python3 -m pip install -r requirements.txt
 
 RUN     PATH=/usr/lib/ccache:$PATH
-#RUN     python3 setup.py clean
 RUN     python3 setup.py bdist_wheel
 
-#▒RUN   python3 setup.py build
-WORKDIR dist
+WORKDIR /drop
+RUN     cp $REPO_HOME/pytorch/dist/*.whl .
+
 CMD     ["/bin/bash"]
 
