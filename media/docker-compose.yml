@@ -3,9 +3,9 @@ services:
   mopidy:
     container_name: mopidy
     image: joursain/raspberry-mopidy
-    build:
-      context: ..
-      dockerfile: media/mopidy/Dockerfile.mopidy
+    #build:
+      #context: ..
+      #dockerfile: media/mopidy/Dockerfile.mopidy
     ports:
       - "6680:6680"
     volumes:
@@ -19,18 +19,19 @@ services:
     devices:
       - /dev/snd
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://spotify.etxe.local || bash -c 'kill -s 15 -1 && (sleep 10; kill -s 9 -1)'"]
+#      test: ["CMD-SHELL", "curl -f http://spotify.etxe.local || bash -c 'kill -s 15 -1 && (sleep 10; kill -s 9 -1)'"]
+      test: ["CMD-SHELL", "curl -f http://spotify.etxe.local || bash -c '/etc/init.d/mopidy restart'"]
       interval: 30m
       timeout: 10s
       retries: 3
-      start_period: 30s
+      start_period: 45s
     restart: unless-stopped
   transmission:
     container_name: transmission
-    image: joursain/raspberry-transmisssion
-    build:
-      context: ..
-      dockerfile: media/transmission/Dockerfile.transmission
+    image: joursain/raspberry-transmission
+   #build:
+     #context: ..
+     #dockerfile: media/transmission/Dockerfile.transmission
     ports:
       - "9091:9091"
       - "51413:51413"
@@ -53,9 +54,9 @@ services:
       - PUID=1000
       - PGID=1000
       - VERSION=docker
-  #- PLEX_CLAIM= see .env file  
+ #- PLEX_CLAIM= see .env file  
     volumes:
       - ${PLEX_CONFIG}:/config
-    #- /mnt/media/plex/tv:/tv      
+   #- /mnt/media/plex/tv:/tv      
       - ${PLEX_MOVIES}:/movies
     restart: unless-stopped
