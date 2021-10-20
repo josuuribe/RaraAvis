@@ -1,0 +1,18 @@
+version: "3"
+services:
+  mopidy:
+    container_name: jupyterlab-ai
+    image: joursain/raspberry-jupyerlab-ai
+    #build:
+      #context: ..
+      #dockerfile: Dockerfile.jupyterlab-ai
+    ports:
+      - "8888:8888"
+    volumes:
+      - ${JUPYTERLAB}:/home/jupyter/notebooks
+    environment:
+      - RA_UUID=1000
+      - RA_GUID=1000
+      - RA_SRVC=mopidy
+      - RA_FLDR=/mnt/mopidy
+    restart: unless-stopped
