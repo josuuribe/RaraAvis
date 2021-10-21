@@ -26,9 +26,11 @@ RUN     apt-get update && \
 	gfortran \
 	tzdata \
 	software-properties-common \
+	sudo \
 	gosu \
 	bzip2 \
         git \
+	dumb-init \
         curl && \
         curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - && \
         apt-get install -y --no-install-recommends nodejs && \
@@ -71,4 +73,6 @@ VOLUME /mnt/jupyter/notebooks
 EXPOSE 8888
 
 # 6. Execute jupyter
+COPY    scripts/ scripts/
+ENTRYPOINT ["/usr/bin/dumb-init","--"]
 CMD ["jupyter", "lab", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--allow-root", "--notebook-dir=/mnt/jupyter/notebooks", "--ServerApp.token=", "--ServerApp.password="]
