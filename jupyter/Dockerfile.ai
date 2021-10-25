@@ -6,6 +6,7 @@ LABEL "guru.raraavis.release-date"="28/02/2021"
 LABEL "guru.raraavis.description"="Raspberry Pi 3 image with JupyterLab Kernels"
 
 USER	root
+
 # 1. Create virtual environments
 SHELL ["/bin/bash", "-c"]
 WORKDIR	/mnt/jupyter/ai
@@ -15,8 +16,8 @@ RUN	python3 -m venv env
 RUN	source env/bin/activate && \
 		python3 -m pip install --upgrade pip setuptools wheel && \
 	        python3 -m pip install \ 
- tensorflow-2.4.0-cp37-none-linux_armv7l.whl \
- torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl \
+		tensorflow-2.4.0-cp37-none-linux_armv7l.whl \
+		torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl \
 		ipykernel \
 		tensorflow \
 		dask[complete] \
@@ -27,7 +28,7 @@ RUN	source env/bin/activate && \
 		scikit-learn \
 		pandas \
 		matplotlib \
-		opencv-python \
+		opencv-python==4.5.3.56 \
 		theano \
 		seaborn \
 		scikit-fuzzy \
@@ -37,6 +38,13 @@ RUN	source env/bin/activate && \
 		python3 -m ipykernel install --user --display-name='Python AI' --name=envpyai && \
 	deactivate
 
-# 2. Execute jupyter, (default use CMD from parent container)
+RUN	rm tensorflow-2.4.0-cp37-none-linux_armv7l.whl
+RUN	rm torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl
+
+# 2. Container
+VOLUME /mnt/jupyter/notebooks
+EXPOSE 8888
+
+# 3. Execute jupyter, (default use CMD from parent container)
 #CMD ["jupyter", "lab", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--allow-root", "--notebook-dir=/home/jupyter/notebooks", "--NotebookApp.token=''", "--NotebookApp.password=''"]
 

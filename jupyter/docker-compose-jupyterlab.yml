@@ -5,7 +5,7 @@ services:
     image: joursain/raspberry-jupyterlab
     #build:
       #context: ..
-      #dockerfile: Dockerfile.jupyterlab-ai
+      #dockerfile: Dockerfile.jupyterlab
     ports:
       - "8888:8888"
     volumes:
