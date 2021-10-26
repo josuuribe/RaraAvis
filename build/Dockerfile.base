@@ -1,0 +1,36 @@
+FROM debian:latest
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG REPO_HOME=/repos
+ENV REPO_HOME=$REPO_HOME
+
+RUN     apt-get update && apt-get install -y \
+                libopenblas-dev \
+                cython3 \
+                libatlas-base-dev \
+                m4 \
+                libblas-dev \
+                libeigen3-dev \
+                libblas-dev \
+                cmake \
+                build-essential \
+                python3-dev \
+                git \
+                ccache \
+                ninja-build && \
+                rm -rf /var/lib/apt/lists/* && \
+                rm -rf /tmp/*
+
+ADD     https://bootstrap.pypa.io/get-pip.py get-pip.py
+RUN     python3 get-pip.py
+RUN     python3 -m pip config --global set global.extra-index-url https://www.piwheels.org/simple
+RUN     python3 -m pip install \
+                pyyaml \
+                typing_extensions \
+                numpy \
+                wheel \
+                mock \
+                pillow
+
+ENTRYPOINT     ["/bin/bash"]
+
