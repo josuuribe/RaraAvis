@@ -2,12 +2,12 @@ version: "3"
 services:
   jupyterlab-ai:
     container_name: jupyterlab-ai
-    image: joursain/raspberry-jupyterlab
+    image: joursain/rpi-jupyterlab-ai
     #build:
       #context: ..
       #dockerfile: Dockerfile.jupyterlab-ai
     ports:
       - "8888:8888"
     volumes:
-      - ${NOTEBOOKS_FOLDER}:/mnt/jupyter/notebooks
+      - ${NOTEBOOKS_FOLDER}:/mnt/jupyter
     restart: unless-stopped

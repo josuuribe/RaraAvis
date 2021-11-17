@@ -1,2 +1,2 @@
-docker build -t joursain/raspberry-jupyterlab -f Dockerfile.jupyterlab .
+docker build -t joursain/rpi-jupyterlab -f Dockerfile.jupyterlab .
 

@@ -1,49 +1,68 @@
-FROM joursain/raspberry-jupyterlab:latest 
-
+FROM joursain/rpi-jupyterlab:latest
 LABEL "guru.raraavis.creator"="blog@raraavis.guru"
-LABEL "guru.raraavis.version"="1.0.0" 
+LABEL "guru.raraavis.version"="1.1.0" 
 LABEL "guru.raraavis.release-date"="28/02/2021" 
-LABEL "guru.raraavis.description"="Raspberry Pi 3 image with JupyterLab Kernels"
-
-USER	root
+LABEL "guru.raraavis.description"="Raspberry Pi image with JupyterLab Kernels"
 
 # 1. Create virtual environments
-SHELL ["/bin/bash", "-c"]
-WORKDIR	/mnt/jupyter/ai
-COPY    tensorflow-2.4.0-cp37-none-linux_armv7l.whl .
-COPY    torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl .
+USER	root
+#SHELL ["/bin/bash", "-c"]
+#RUN	mkdir -p /home/jupyter/ai
+RUN	whoami && pwd && ls -la
+#WORKDIR	/home/jupyter
+#RUN	mkdir -p ai
+#RUN	chown -R jupyter ai
+#RUN	whoami && pwd && ls -la
+WORKDIR	/home/jupyter/ai
+RUN	chown -R jupyter:jupyter /home/jupyter/ai
+USER	jupyter
+COPY --chown=jupyter    tensorflow-2.4.4-cp37-none-linux_armv7l.whl .
+COPY --chown=jupyter    torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl .
+RUN	pwd && whoami && ls -la
 RUN	python3 -m venv env 
+RUN	ls -la
 RUN	source env/bin/activate && \
-		python3 -m pip install --upgrade pip setuptools wheel && \
-	        python3 -m pip install \ 
-		tensorflow-2.4.0-cp37-none-linux_armv7l.whl \
-		torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl \
+	python3 -m pip install --upgrade pip setuptools wheel && \
+	python3 -m pip install --extra-index-url https://google-coral.github.io/py-repo/ tflite_runtime && \
+	python3 -m pip install \
+		tflite-runtime && \
+	python3 -m pip install \
+                torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl \
+#		tensorflow-2.4.4-cp37-none-linux_armv7l.whl \
+#		torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl \
 		ipykernel \
-		tensorflow \
+#		tensorflow \
 		dask[complete] \
-		torch \
+#		torch \
 		keras \
 		numpy \
 		scipy \
 		scikit-learn \
 		pandas \
 		matplotlib \
-		opencv-python==4.5.3.56 \
+#		opencv-python==4.5.3.56 \
+		opencv-contrib-python==4.5.3.56 \
 		theano \
 		seaborn \
 		scikit-fuzzy \
 		mlflow \
 		pyforest \
+		typing-extensions \
 		nltk && \
-		python3 -m ipykernel install --user --display-name='Python AI' --name=envpyai && \
+	python3 -m ipykernel install --user --display-name='Python AI Lite' --name=envpyai && \
 	deactivate
 
-RUN	rm tensorflow-2.4.0-cp37-none-linux_armv7l.whl
+#RUN	source env/bin/activate && \
+	#python3 -m ipykernel install --user --display-name='Python AI' --name=envpyay
+#	python3 -m ipykernel install --user --display-name='Python AI' --name=envpyai
+#RUN	rm tensorflow-python3 -m ipykernel install --user --display-name='Python AI' --name=envpyai && \2.4.4-cp37-none-linux_armv7l.whl
 RUN	rm torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl
 
+RUN	ls -la /home/jupyter/ai
+
 # 2. Container
-VOLUME /mnt/jupyter/notebooks
-EXPOSE 8888
+#VOLUME	/home/jupyter/
+#EXPOSE	8888
 
 # 3. Execute jupyter, (default use CMD from parent container)
 #CMD ["jupyter", "lab", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--allow-root", "--notebook-dir=/home/jupyter/notebooks", "--NotebookApp.token=''", "--NotebookApp.password=''"]
