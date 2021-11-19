@@ -1,13 +1,12 @@
-# 0. Official debian image
-FROM debian:latest 
-LABEL "guru.raraavis.creator"="blog@raraavis.guru" 
-LABEL "guru.raraavis.version"="1.0.0" 
-LABEL "guru.raraavis.release-date"="28/02/2021" 
-LABEL "guru.raraavis.description"="Raspberry Pi 3 image with JupyterLab"
+FROM debian:buster
+LABEL "guru.raraavis.creator"="blog@raraavis.guru"
+LABEL "guru.raraavis.version"="1.1.0"
+LABEL "guru.raraavis.release-date"="31/10/2021"
+LABEL "guru.raraavis.description"="Raspberry Pi image with JupyterLab"
 
 # 1. Environment vars
 ARG DEBIAN_FRONTEND=noninteractive
-ARG NODE_OPTIONS=--max-old-space-size=768
+ARG NODE_OPTIONS=--max-old-space-size=2048
 ARG TZ=Europe/Madrid
 ENV NODE_VERSION=16
 ENV JUPYTER_ID=1000
@@ -19,16 +18,18 @@ RUN     apt-get update && \
         apt-get install -y --no-install-recommends \
         python3-dev \
         python3-venv \
-	libatlas-base-dev \
-	libblas-dev \
-	liblapack-dev \
-	python-dev \
-	gfortran \
-	tzdata \
-	software-properties-common \
-	gosu \
-	bzip2 \
+        libatlas-base-dev \
+        libblas-dev \
+        liblapack-dev \
+        python-dev \
+        gfortran \
+        tzdata \
+        software-properties-common \
+        sudo \
+        gosu \
+        bzip2 \
         git \
+        dumb-init \
         curl && \
         curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - && \
         apt-get install -y --no-install-recommends nodejs && \
@@ -36,39 +37,44 @@ RUN     apt-get update && \
         rm -rf /tmp/*
 # 2.2 Install pip
 ADD     https://bootstrap.pypa.io/get-pip.py get-pip.py
-RUN	python3 get-pip.py
-RUN	python3 -m pip config --global set global.extra-index-url https://www.piwheels.org/simple
+RUN     python3 get-pip.py
+RUN     python3 -m pip config --global set global.extra-index-url https://www.piwheels.org/simple
 # 2.3 Install pip packages and Jupyter
 RUN     python3 -m pip install --upgrade \
         conda \
-	virtualenv \
+        virtualenv \
         ipykernel \
         jupyter \
         jupyterlab \
-        jupyterlab-git
+        jupyterlab-git \
+        jupyter_contrib_nbextensions \
+        autopep8
+
 RUN     jupyter lab build
+RUN     jupyter contrib nbextension install --system
 
 # 3. Add jupyter user
 RUN     adduser --uid $JUPYTER_ID --disabled-password --gecos '' jupyter
 RUN     adduser jupyter sudo
 RUN     echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-# 3.1 Create folder
-RUN     mkdir -p /mnt/jupyter/notebooks
-RUN     chown -R jupyter:jupyter /mnt/jupyter
-RUN     chmod -R 755 /mnt/jupyter
-WORKDIR /mnt/jupyter
 
 # 4. Install Miniconda
-USER    jupyter
-ADD --chown=jupyter:jupyter	http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-armv7l.sh Miniconda3.sh
-RUN	chmod 755 Miniconda3.sh
-RUN	md5sum Miniconda3.sh
-RUN	./Miniconda3.sh -b -p /mnt/jupyter/miniconda3
-RUN	./miniconda3/bin/conda config --add channels rpi
+WORKDIR /home/jupyter
+ADD --chown=jupyter     http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-armv7l.sh Miniconda3.sh
+RUN     chmod 755 Miniconda3.sh
+RUN     md5sum Miniconda3.sh
+RUN     ./Miniconda3.sh -b -p /home/jupyter/miniconda3
+RUN     ./miniconda3/bin/conda config --add channels rpi
+RUN     rm ./Miniconda3.sh
 
-# 5. Container
-VOLUME /mnt/jupyter/notebooks
-EXPOSE 8888
+# 5. Configure container
+RUN     mkdir -p /home/jupyter/notebooks
+RUN     chown -R jupyter:jupyter /home/jupyter
+ONBUILD SHELL   ["/bin/bash","-c"]
+VOLUME	/home/jupyter/notebooks
+EXPOSE	8888
+USER	jupyter
 
 # 6. Execute jupyter
-CMD ["jupyter", "lab", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--allow-root", "--notebook-dir=/mnt/jupyter/notebooks", "--ServerApp.token=", "--ServerApp.password="]
+ENTRYPOINT ["/usr/bin/dumb-init","--"]
+CMD ["jupyter", "lab", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--allow-root", "--notebook-dir=/home/jupyter/notebooks", "--ServerApp.token=", "--ServerApp.password="]

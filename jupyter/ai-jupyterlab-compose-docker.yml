@@ -1,8 +1,8 @@
 version: "3"
 services:
-  mopidy:
+  jupyterlab-ai:
     container_name: jupyterlab-ai
-    image: joursain/raspberry-jupyerlab-ai
+    image: joursain/rpi-jupyterlab-ai
     #build:
       #context: ..
       #dockerfile: Dockerfile.jupyterlab-ai

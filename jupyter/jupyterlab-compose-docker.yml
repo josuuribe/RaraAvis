@@ -1,0 +1,12 @@
+version: "3"
+services:
+  mopidy:
+    container_name: jupyterlab
+    image: joursain/raspberry-jupyterlab
+    #build:
+      #context: ..
+      #dockerfile: Dockerfile.jupyterlab-ai
+    ports:
+      - "8888:8888"
+    volumes:
+      - ${JUPYTERLAB}:/home/jupyter/notebooks
