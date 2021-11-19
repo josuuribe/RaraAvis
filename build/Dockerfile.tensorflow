@@ -1,0 +1,64 @@
+FROM ubuntu:latest
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG REPO_HOME=/repos
+ARG TENSORFLOW_HOME=$REPO_HOME/tensorflow
+ARG TENSORFLOW_TAG=v2.7.0-rc1
+
+RUN     apt-get update && apt-get install -y \
+                libopenblas-dev \
+                cython3 \
+                libatlas-base-dev \
+                m4 \
+                libblas-dev \
+                libeigen3-dev \
+		liblapack-dev \
+                cmake \
+                build-essential \
+                python3-dev \
+                git \
+                ccache \
+                ninja-build && \
+                rm -rf /var/lib/apt/lists/* && \
+                rm -rf /tmp/*
+
+ADD     https://bootstrap.pypa.io/get-pip.py get-pip.py
+RUN     python3 get-pip.py
+RUN     python3 -m pip config --global set global.extra-index-url https://www.piwheels.org/simple
+#RUN     python3 -m pip install \
+#                pyyaml \
+#                typing_extensions \
+#                numpy \
+#                wheel \
+#                mock \
+#                pillow \
+#		keras_preprocessing
+
+WORKDIR $REPO_HOME
+RUN     git clone --recursive https://github.com/tensorflow/tensorflow.git
+WORKDIR $TENSORFLOW_HOME/tensorflow
+RUN     git checkout tags/$TENSORFLOW_TAG -b build
+#RUN     git submodule update --init --recursive
+
+#WORKDIR $REPO_HOME/pytorch
+#RUN     python3 -m pip install -r requirements.txt
+
+#RUN     PATH=/usr/lib/ccache:$PATH
+#RUN     python3 setup.py bdist_wheel
+
+#WORKDIR /drop
+#RUN     cp $REPO_HOME/pytorch/dist/*.whl .
+
+#RUN	echo $TENSORFLOW_HOME
+#WORKDIR $TENSORFLOW_HOME
+#RUN	ls /repos/tensorflow/tensorflow/tools/ci_build/
+#CMD     /repos/tensorflow/tensorflow/tools/ci_build/ci_build.sh "PI-PYTHON38 /repos/tensorflow/tensorflow/tools/ci_build/pi/build_raspberry_pi.sh AARCH64"
+
+RUN	apt-get update -y && apt-get install -y curl
+RUN	curl -fsSL https://get.docker.com -o get-docker.sh
+RUN	["/bin/sh", "get-docker.sh"]
+
+ENV	PYTHON_VERSION=PI-PYTHON39
+ENV	TENSORFLOW_ARCH=AARCH64
+WORKDIR	$TENSORFLOW_HOME
+CMD	["sh", "-c", "tensorflow/tools/ci_build/ci_build.sh ${PYTHON_VERSION} tensorflow/tools/ci_build/pi/build_raspberry_pi.sh ${TENSORFLOW_ARCH}"]
