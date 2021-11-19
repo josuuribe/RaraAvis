@@ -1,0 +1,24 @@
+FROM joursain/raspberry-build-base:latest
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG REPO_HOME=$REPO_.HOME
+ARG OPENCV_HOME=$REPO_HOME/dist
+ARG OPENCV_TAG=v1.8.1
+
+WORKDIR $REPO_HOME
+RUN     git clone --recursive https://github.com/opencv/opencv-python.git
+WORKDIR $REPO_HOME/opencv-python
+#RUN     git checkout tags/$PYTORCH_TAG -b build
+#RUN     git submodule update --init --recursive
+
+#WORKDIR $REPO_HOME/pytorch
+#RUN     python3 -m pip install -r requirements.txt
+
+#RUN     PATH=/usr/lib/ccache:$PATH
+RUN     python3 -m pip wheel . --verbose
+
+#WORKDIR /drop
+#RUN     cp $REPO_HOME/pytorch/dist/*.whl .
+
+CMD     ["/bin/bash"]
+

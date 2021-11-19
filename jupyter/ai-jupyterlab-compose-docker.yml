@@ -9,10 +9,5 @@ services:
     ports:
       - "8888:8888"
     volumes:
-      - ${JUPYTERLAB}:/home/jupyter/notebooks
-    environment:
-      - RA_UUID=1000
-      - RA_GUID=1000
-      - RA_SRVC=mopidy
-      - RA_FLDR=/mnt/mopidy
+      - ${NOTEBOOKS_FOLDER}:/mnt/jupyter
     restart: unless-stopped

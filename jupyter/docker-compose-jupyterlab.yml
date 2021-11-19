@@ -1,0 +1,14 @@
+version: "3"
+services:
+  jupyterlab:
+    container_name: jupyterlab
+    image: joursain/rpi-jupyterlab
+    #build:
+      #context: ..
+      #dockerfile: Dockerfile.jupyterlab
+    ports:
+      - "8888:8888"
+    volumes:
+      - ${NOTEBOOKS_FOLDER}:/home/jupyter/notebooks
+      - ${JUPYTER_FOLDER}:/home/jupyter
+    restart: unless-stopped
