@@ -4,8 +4,19 @@ LABEL "guru.raraavis.version"="1.1.0"
 LABEL "guru.raraavis.release-date"="28/02/2021"
 LABEL "guru.raraavis.description"="Raspberry Pi image with JupyterLab Kernels"
 
-# 1. Create virtual environments
+
+# 0. Prepare system
+# 0.1 Required for Matplotlib
 USER	root
+RUN     apt-get update -y && apt-get install -y \
+                libopenjp2-7 \
+                libjpeg62-turbo \
+                libtiff5 \
+		libxcb1 && \
+        rm -rf /var/lib/apt/lists/* && \
+        rm -rf /tmp/*
+
+# 1. Create virtual environments
 WORKDIR /home/jupyter/ai
 COPY --chown=jupyter    tensorflow-2.4.0-cp37-none-linux_armv7l.whl .
 COPY --chown=jupyter    torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl .
