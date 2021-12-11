@@ -1,9 +1,8 @@
-FROM joursain/rpi-jupyterlab:buster
-LABEL "guru.raraavis.creator"="blog@raraavis.guru"
-LABEL "guru.raraavis.version"="1.1.0"
-LABEL "guru.raraavis.release-date"="28/02/2021"
+FROM joursain/rpi-jupyterlab:buster 
+LABEL "guru.raraavis.creator"="blog@raraavis.guru" 
+LABEL "guru.raraavis.version"="1.1.0" 
+LABEL "guru.raraavis.release-date"="28/02/2021" 
 LABEL "guru.raraavis.description"="Raspberry Pi image with JupyterLab Kernels"
-
 
 # 0. Prepare system
 # 0.1 Required for Matplotlib
@@ -21,58 +20,66 @@ WORKDIR /home/jupyter/ai
 COPY --chown=jupyter    tensorflow-2.4.0-cp37-none-linux_armv7l.whl .
 COPY --chown=jupyter    torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl .
 
+RUN	chown -R jupyter:jupyter /home/jupyter/ai
+USER	jupyter
 RUN     python3 -m venv envailite
 RUN     source envailite/bin/activate && \
         python3 -m pip install --upgrade pip setuptools wheel && \
         python3 -m pip install --extra-index-url https://google-coral.github.io/py-repo/ tflite_runtime && \
-        python3 -m pip install \
-                tflite-runtime && \
-        python3 -m pip install \
-#		torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl \
-                ipykernel \
-                dask[complete] \
-                keras \
-                numpy \
-                scipy \
-                scikit-learn \
-                pandas \
-                matplotlib \
+        python3 -m pip install --upgrade	\
+		typing-extensions		\
+                ipykernel                       \
+                dask[complete]                  \
+                keras                           \
+                numpy                           \
+                scipy                           \
+                scikit-learn                    \
+                pandas                          \
+                matplotlib==3.5.0               \
                 opencv-contrib-python==4.5.3.56 \
-                theano \
-                seaborn \
-                scikit-fuzzy \
-                mlflow \
-                pyforest \
-                typing-extensions \
-                nltk && \
-	python3 -m pip install \
-		torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl && \
-        python3 -m ipykernel install --user --display-name='Python AI Lite' --name=envpyai && \
+                theano                          \
+                seaborn                         \
+                scikit-fuzzy                    \
+                mlflow                          \
+                pyforest                        \
+                html5lib                        \
+                BeautifulSoup4                  \
+		scrapy				\
+		requests			\
+		bokeh				\
+		plotly				\
+                nltk			     && \
+	python3 -m pip install torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl && \
+        python3 -m ipykernel install --user --display-name='Python AI Lite' --name=envpyailite && \
         deactivate
 
 RUN     python3 -m venv envai
 RUN     source envai/bin/activate && \
         python3 -m pip install --upgrade pip setuptools wheel && \
-        python3 -m pip install \
-		torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl \
-		tensorflow-2.4.0-cp37-none-linux_armv7l.whl  \
-                ipykernel \
-                dask[complete] \
-                keras \
-                numpy \
-                scipy \
-                scikit-learn \
-                pandas \
-                matplotlib \
-                opencv-contrib-python=4.5.3.56 \
-                theano \
-                seaborn \
-                scikit-fuzzy \
-                mlflow \
-                pyforest \
-                typing-extensions \
-                nltk && \
-	python3 -m pip install \
+        python3 -m pip install --upgrade	\
+		typing-extensions		\
+                ipykernel                       \
+                dask[complete]                  \
+                keras                           \
+                numpy                           \
+                scipy                           \
+                scikit-learn                    \
+                pandas                          \
+                matplotlib==3.5.0               \
+                opencv-contrib-python==4.5.3.56 \
+                theano                          \
+                seaborn                         \
+                scikit-fuzzy                    \
+                mlflow                          \
+                pyforest                        \
+                html5lib                        \
+                BeautifulSoup4                  \
+		scrapy				\
+		requests			\
+		bokeh				\
+		plotly				\
+                nltk                         && \
+	python3 -m pip install	\
 		torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl \
 		tensorflow-2.4.0-cp37-none-linux_armv7l.whl &&	\
         python3 -m ipykernel install --user --display-name='Python AI' --name=envpyai && \
@@ -80,4 +87,4 @@ RUN     source envai/bin/activate && \
 
 RUN	rm torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl
 RUN	rm tensorflow-2.4.0-cp37-none-linux_armv7l.whl
-RUN	chown -R jupyter:jupyter /home/jupyter/ai
+#RUN	chown -R jupyter:jupyter /home/jupyter/ai
