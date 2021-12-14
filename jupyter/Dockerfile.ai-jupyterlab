@@ -22,6 +22,7 @@ COPY --chown=jupyter    torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl .
 
 RUN	chown -R jupyter:jupyter /home/jupyter/ai
 USER	jupyter
+
 RUN     python3 -m venv envailite
 RUN     source envailite/bin/activate && \
         python3 -m pip install --upgrade pip setuptools wheel && \
@@ -34,7 +35,7 @@ RUN     source envailite/bin/activate && \
                 numpy                           \
                 scipy                           \
                 scikit-learn                    \
-                pandas                          \
+                pandas==1.3.4                   \
                 matplotlib==3.5.0               \
                 opencv-contrib-python==4.5.3.56 \
                 theano                          \
@@ -48,6 +49,7 @@ RUN     source envailite/bin/activate && \
 		requests			\
 		bokeh				\
 		plotly				\
+		lxml==4.6.4			\
                 nltk			     && \
 	python3 -m pip install torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl && \
         python3 -m ipykernel install --user --display-name='Python AI Lite' --name=envpyailite && \
@@ -60,11 +62,11 @@ RUN     source envai/bin/activate && \
 		typing-extensions		\
                 ipykernel                       \
                 dask[complete]                  \
-                keras                           \
+		keras				\
                 numpy                           \
                 scipy                           \
                 scikit-learn                    \
-                pandas                          \
+                pandas==1.3.4                   \
                 matplotlib==3.5.0               \
                 opencv-contrib-python==4.5.3.56 \
                 theano                          \
@@ -78,6 +80,8 @@ RUN     source envai/bin/activate && \
 		requests			\
 		bokeh				\
 		plotly				\
+		sympy				\
+		lxml==4.6.4			\
                 nltk                         && \
 	python3 -m pip install	\
 		torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl \
@@ -85,6 +89,35 @@ RUN     source envai/bin/activate && \
         python3 -m ipykernel install --user --display-name='Python AI' --name=envpyai && \
         deactivate
 
+RUN     python3 -m venv envmaths
+RUN     source envmaths/bin/activate && \
+        python3 -m pip install --upgrade pip setuptools wheel && \
+        python3 -m pip install --upgrade        \
+                typing-extensions               \
+                ipykernel                       \
+                keras                           \
+                numpy                           \
+                scipy                           \
+                scikit-learn                    \
+                pandas==1.3.4                   \
+                matplotlib==3.5.0               \
+                opencv-contrib-python==4.5.3.56 \
+                theano                          \
+                seaborn                         \
+                scikit-fuzzy                    \
+                html5lib                        \
+                BeautifulSoup4                  \
+                scrapy                          \
+                requests                        \
+                bokeh                           \
+                plotly                          \
+		sympy				\
+		lxml==4.6.4			\
+                nltk                         && \
+        python3 -m pip install  \
+                torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl && \
+        python3 -m ipykernel install --user --display-name='Python Maths' --name=envmaths && \
+        deactivate
+
 RUN	rm torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl
 RUN	rm tensorflow-2.4.0-cp37-none-linux_armv7l.whl
-#RUN	chown -R jupyter:jupyter /home/jupyter/ai
