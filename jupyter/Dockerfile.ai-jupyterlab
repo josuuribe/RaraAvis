@@ -11,7 +11,16 @@ RUN     apt-get update -y && apt-get install -y \
                 libopenjp2-7 \
                 libjpeg62-turbo \
                 libtiff5 \
-		libxcb1 && \
+		libhdf5-dev \
+		libpng-dev \
+		libavcodec-dev \
+		libavformat-dev \
+		libswscale-dev \
+		libgtk-3-dev \
+		libxcb1 \
+		# Required for nbconvert (to PDF)
+		pandoc \
+		texlive-xetex && \
         rm -rf /var/lib/apt/lists/* && \
         rm -rf /tmp/*
 
@@ -26,15 +35,15 @@ USER	jupyter
 RUN     python3 -m venv envailite
 RUN     source envailite/bin/activate && \
         python3 -m pip install --upgrade pip setuptools wheel && \
-        python3 -m pip install --extra-index-url https://google-coral.github.io/py-repo/ tflite_runtime && \
         python3 -m pip install --upgrade	\
 		typing-extensions		\
                 ipykernel                       \
                 dask[complete]                  \
                 keras                           \
-                numpy                           \
+                numpy==1.21.4                   \
                 scipy                           \
                 scikit-learn                    \
+		scikit-image			\
                 pandas==1.3.4                   \
                 matplotlib==3.5.0               \
                 opencv-contrib-python==4.5.3.56 \
@@ -50,7 +59,9 @@ RUN     source envailite/bin/activate && \
 		bokeh				\
 		plotly				\
 		lxml==4.6.4			\
+		graphviz			\
                 nltk			     && \
+        python3 -m pip install --extra-index-url https://google-coral.github.io/py-repo/ tflite_runtime && \
 	python3 -m pip install torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl && \
         python3 -m ipykernel install --user --display-name='Python AI Lite' --name=envpyailite && \
         deactivate
@@ -63,9 +74,10 @@ RUN     source envai/bin/activate && \
                 ipykernel                       \
                 dask[complete]                  \
 		keras				\
-                numpy                           \
+                numpy==1.21.4                   \
                 scipy                           \
                 scikit-learn                    \
+		scikit-image			\
                 pandas==1.3.4                   \
                 matplotlib==3.5.0               \
                 opencv-contrib-python==4.5.3.56 \
@@ -82,6 +94,7 @@ RUN     source envai/bin/activate && \
 		plotly				\
 		sympy				\
 		lxml==4.6.4			\
+		graphviz			\
                 nltk                         && \
 	python3 -m pip install	\
 		torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl \
@@ -96,7 +109,7 @@ RUN     source envmaths/bin/activate && \
                 typing-extensions               \
                 ipykernel                       \
                 keras                           \
-                numpy                           \
+                numpy==1.21.4                   \
                 scipy                           \
                 scikit-learn                    \
                 pandas==1.3.4                   \
