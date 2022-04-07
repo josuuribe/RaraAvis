@@ -1,4 +1,4 @@
-FROM joursain/rpi-jupyterlab:buster 
+FROM joursain/rpi-jupyterlab:bullseye
 LABEL "guru.raraavis.creator"="blog@raraavis.guru" 
 LABEL "guru.raraavis.version"="1.1.0" 
 LABEL "guru.raraavis.release-date"="28/02/2021" 
@@ -20,6 +20,7 @@ RUN     apt-get update -y && apt-get install -y \
 		libxcb1 \
 		# Required for nbconvert (to PDF)
 		pandoc \
+		libxslt1.1 \
 		texlive-xetex && \
         rm -rf /var/lib/apt/lists/* && \
         rm -rf /tmp/*
@@ -40,13 +41,13 @@ RUN     source envailite/bin/activate && \
                 ipykernel                       \
                 dask[complete]                  \
                 keras                           \
-                numpy==1.21.4                   \
+                numpy                           \
                 scipy                           \
                 scikit-learn                    \
 		scikit-image			\
-                pandas==1.3.4                   \
-                matplotlib==3.5.0               \
-                opencv-contrib-python==4.5.3.56 \
+                pandas                          \
+                matplotlib                      \
+                opencv-contrib-python==4.5.5.62 \
                 theano                          \
                 seaborn                         \
                 scikit-fuzzy                    \
@@ -58,7 +59,7 @@ RUN     source envailite/bin/activate && \
 		requests			\
 		bokeh				\
 		plotly				\
-		lxml==4.6.4			\
+		lxml     			\
 		graphviz			\
                 nltk			     && \
         python3 -m pip install --extra-index-url https://google-coral.github.io/py-repo/ tflite_runtime && \
@@ -74,13 +75,13 @@ RUN     source envai/bin/activate && \
                 ipykernel                       \
                 dask[complete]                  \
 		keras				\
-                numpy==1.21.4                   \
+                numpy                           \
                 scipy                           \
                 scikit-learn                    \
 		scikit-image			\
-                pandas==1.3.4                   \
-                matplotlib==3.5.0               \
-                opencv-contrib-python==4.5.3.56 \
+                pandas                          \
+                matplotlib                      \
+                opencv-contrib-python==4.5.5.62 \
                 theano                          \
                 seaborn                         \
                 scikit-fuzzy                    \
@@ -93,7 +94,7 @@ RUN     source envai/bin/activate && \
 		bokeh				\
 		plotly				\
 		sympy				\
-		lxml==4.6.4			\
+		lxml     			\
 		graphviz			\
                 nltk                         && \
 	python3 -m pip install	\
@@ -109,12 +110,12 @@ RUN     source envmaths/bin/activate && \
                 typing-extensions               \
                 ipykernel                       \
                 keras                           \
-                numpy==1.21.4                   \
+                numpy                           \
                 scipy                           \
                 scikit-learn                    \
-                pandas==1.3.4                   \
-                matplotlib==3.5.0               \
-                opencv-contrib-python==4.5.3.56 \
+                pandas                          \
+                matplotlib                      \
+                opencv-contrib-python==4.5.5.62 \
                 theano                          \
                 seaborn                         \
                 scikit-fuzzy                    \
@@ -125,7 +126,7 @@ RUN     source envmaths/bin/activate && \
                 bokeh                           \
                 plotly                          \
 		sympy				\
-		lxml==4.6.4			\
+		lxml     			\
                 nltk                         && \
         python3 -m pip install  \
                 torch-1.8.0a0+37c1f4a-cp37-cp37m-linux_armv7l.whl && \
