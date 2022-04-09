@@ -1,78 +1,74 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using UpToDate.Helpers;
+﻿using System.Diagnostics.CodeAnalysis;
 
-namespace UpToDate
+namespace UpToDate;
+
+internal class Extra
 {
-    internal class Extra
+
+    public Sorcerer<float, string> CreateWithNullName()
     {
+        var sorcerer = new Sorcerer<float, string>();
+        sorcerer.Name = null;
+        return sorcerer;
+    }
 
-        public Sorcerer<float, string> CreateWithNullName()
-        {
-            var sorcerer = new Sorcerer<float, string>();
-            sorcerer.Name = null;
-            return sorcerer;
-        }
+    public string NullsInParameters()
+    {
+        var sorcerer = new Sorcerer<float, string>();
+        PersonStruct? p = null;
+        sorcerer.LowerName(ref p);
+        return p == null ? "Null" : p.Value.Name;
+    }
 
-        public string NullsInParameters()
-        {
-            var sorcerer = new Sorcerer<float, string>();
-            PersonStruct? p = null;
-            sorcerer.LowerName(ref p);
-            return p == null ? "Null" : p.Value.Name;
-        }
+    [return: MaybeNull]
+    public Z Find<Z>(Z s)
+    {
+        Z z = default(Z);
+        return s == null ? z : s;
+    }
 
-        [return: MaybeNull]
-        public Z Find<Z>(Z s)
+    public void Swap<Z>([NotNull]ref Z[]? z)
+        where Z : new()
+    {
+        if (z is null)
         {
-            Z z = default(Z);
-            return s == null ? z : s;
+            z = new Z[] { new Z() };
         }
+    }
 
-        public void Swap<Z>([NotNull]ref Z[]? z)
-            where Z : new()
-        {
-            if (z is null)
-            {
-                z = new Z[] { new Z() };
-            }
-        }
+    public bool IsNullOrEmpty([NotNullWhen(false)] string? value)
+    {
+        return String.IsNullOrEmpty(value);
+    }
 
-        public bool IsNullOrEmpty([NotNullWhen(false)] string? value)
+    public bool TryParse(string? input, [NotNullWhen(true)]out Version? version)
+    {
+        if (!String.IsNullOrEmpty(input))
         {
-            return String.IsNullOrEmpty(value);
+            version = new Version(input);
+            return true;
         }
+        version = new Version("0.0.0.0");
+        return false;
+    }
 
-        public bool TryParse(string? input, [NotNullWhen(true)]out Version? version)
-        {
-            if (!String.IsNullOrEmpty(input))
-            {
-                version = new Version(input);
-                return true;
-            }
-            version = new Version("0.0.0.0");
-            return false;
-        }
+    [return: NotNullIfNotNull("s")]
+    public string? ToLower(string? s)
+    {
+        if (String.IsNullOrEmpty(s))
+            return string.Empty;
+        return s.ToLower();
+    }
 
-        [return: NotNullIfNotNull("s")]
-        public string? ToLower(string? s)
-        {
-            if (String.IsNullOrEmpty(s))
-                return string.Empty;
-            return s.ToLower();
-        }
+    [DoesNotReturn]
+    public void ThrowLowerException(string s)
+    {
+        throw new ArgumentException(s);
+    }
 
-        [DoesNotReturn]
-        public void ThrowLowerException(string s)
-        {
-            throw new ArgumentException(s);
-        }
-
-        public void AssertIsLower([DoesNotReturnIf(false)] bool s)
-        {
-            if (s)
-                throw new ArgumentException("Lower string");
-        }
+    public void AssertIsLower([DoesNotReturnIf(false)] bool s)
+    {
+        if (s)
+            throw new ArgumentException("Lower string");
     }
 }
