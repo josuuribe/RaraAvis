@@ -122,7 +122,6 @@ RUN packages="                                               \
     lirc                                                     \
     lirc-compat-remotes                                      \
     locales                                                  \
-#    pulseaudio                                               \
     libnss3                                                  \
     tzdata"                                               && \
                                                              \
@@ -177,7 +176,6 @@ WORKDIR /repos/rpiplay/build
 RUN	ls -la
 RUN	cmake ..
 RUN	make -j 4
-#RUN     make install
 WORKDIR /
 RUN	rm -rf /repos
 RUN	rm -rf /rpiplay.tar.gz
@@ -188,8 +186,6 @@ WORKDIR	/plugins
 ADD	--chown=kodi:sudo https://github.com/castagnait/repository.castagnait/raw/kodi/repository.castagnait-2.0.0.zip .
 ADD	--chown=kodi:sudo https://k.slyguy.xyz/repository.slyguy.zip .
 ADD	--chown=kodi:sudo https://github.com/Sandmann79/xbmc/releases/download/Repository/repository.sandmann79.plugins-1.0.4.zip .
-
-#RUN     apt-get update && apt-get install -y pulseaudio-module-jack qjackctl
 
 # Configuration
 EXPOSE	8080 9777/udp
