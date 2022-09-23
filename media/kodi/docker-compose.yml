@@ -1,0 +1,31 @@
+version: "3.7"
+services:
+  rpi-kodi:
+    image: joursain/rpi-kodi:buster
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: "kodi"
+    user: kodi
+    network_mode: host
+    restart: "no"
+    privileged: true
+    devices:
+      - /dev/fb0:/dev/fb0
+      - /dev/vchiq:/dev/vchiq
+      - /dev/tty0:/dev/tty0
+      - /dev/tty2:/dev/tty2
+      - /dev/input:/dev/input
+      - /dev/snd:/dev/snd
+      - /dev/shm:/dev/shm
+    volumes:
+      - /var/run/dbus:/var/run/dbus
+      - /mnt/media/kodi:/home/kodi
+      - /run/user/1000/bus:/run/user/1000/bus
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/usr/bin/tvservice:/usr/bin/tvservice:ro"
+    tmpfs:
+      - /tmp
+    environment:
+      - DBUS_SYSTEM_BUS_ADDRESS=unix:path=/var/run/dbus/system_bus_socket
