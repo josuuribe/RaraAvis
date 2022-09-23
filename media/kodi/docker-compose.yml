@@ -21,7 +21,6 @@ services:
     volumes:
       - /var/run/dbus:/var/run/dbus
       - /mnt/media/kodi:/home/kodi
-      - /run/user/1000/bus:/run/user/1000/bus
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "/usr/bin/tvservice:/usr/bin/tvservice:ro"
