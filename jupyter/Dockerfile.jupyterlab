@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM debian:bullseye
 LABEL "guru.raraavis.creator"="blog@raraavis.guru"
 LABEL "guru.raraavis.version"="1.1.0"
 LABEL "guru.raraavis.release-date"="31/10/2021"
