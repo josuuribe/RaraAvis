@@ -20,6 +20,12 @@
 
 FROM balenalib/raspberrypi3-debian:bullseye
 
+LABEL "guru.raraavis.creator"="blog@raraavis.guru"
+LABEL "guru.raraavis.version"="1.0.0"
+LABEL "guru.raraavis.release-date"="23/09/2022"
+LABEL "guru.raraavis.description"="Raspberry Pi 3 image with Kodi"
+
+
 ARG DEBIAN_FRONTEND=noninteractive
 # 1 for HDMI, 0 for headphones
 ARG     AUDIO=1
