@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ -z $1 ]; then
-	echo "No paramater!!!"
+	echo "No parameter!!!"
 	exit 1
 fi
 

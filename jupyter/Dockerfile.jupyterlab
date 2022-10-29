@@ -1,7 +1,7 @@
 FROM debian:bullseye
 LABEL "guru.raraavis.creator"="blog@raraavis.guru"
-LABEL "guru.raraavis.version"="1.1.0"
-LABEL "guru.raraavis.release-date"="31/10/2021"
+LABEL "guru.raraavis.version"="1.2.0"
+LABEL "guru.raraavis.release-date"="11/04/2021"
 LABEL "guru.raraavis.description"="Raspberry Pi image with JupyterLab"
 
 # 1. Environment vars
@@ -13,6 +13,11 @@ ENV JUPYTER_ID=1000
 ENV TZ=$TZ
 
 # 2. Install packages
+
+# 2.0 Add non-free repositories
+RUN	echo deb http://deb.debian.org/debian bullseye contrib non-free | tee -a /etc/apt/sources.list
+RUN	echo deb http://deb.debian.org/debian bullseye-updates contrib non-free | tee -a /etc/apt/sources.list
+
 # 2.1 Update system and install necessary packages
 RUN     apt-get update && \
         apt-get install -y --no-install-recommends \
@@ -24,12 +29,17 @@ RUN     apt-get update && \
         python-dev \
         gfortran \
         tzdata \
+	build-essential \
         software-properties-common \
+	procps \
         sudo \
         gosu \
         bzip2 \
         git \
+	wget \
         dumb-init \
+	unrar \
+	p7zip-full \
         curl && \
         curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - && \
         apt-get install -y --no-install-recommends nodejs && \
@@ -44,6 +54,10 @@ RUN     python3 -m pip install --upgrade \
         conda \
         virtualenv \
         ipykernel \
+	phik \
+	ipywidgets \
+	widgetsnbextension \
+	pandas-profiling \
         jupyter \
         jupyterlab \
         jupyterlab-git \
@@ -58,14 +72,8 @@ RUN     adduser --uid $JUPYTER_ID --disabled-password --gecos '' jupyter
 RUN     adduser jupyter sudo
 RUN     echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
-# 4. Install Miniconda
+# 4. Set home
 WORKDIR /home/jupyter
-ADD --chown=jupyter     http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-armv7l.sh Miniconda3.sh
-RUN     chmod 755 Miniconda3.sh
-RUN     md5sum Miniconda3.sh
-RUN     ./Miniconda3.sh -b -p /home/jupyter/miniconda3
-RUN     ./miniconda3/bin/conda config --add channels rpi
-RUN     rm ./Miniconda3.sh
 
 # 5. Configure container
 RUN     mkdir -p /home/jupyter/notebooks
