@@ -101,7 +101,5 @@ internal class DemoExpression
         Console.WriteLine(longMessage);
 
         Console.WriteLine(expressions.Scoped());
-
-        //Console.WriteLine(expressions.ParamsCollection("This", "is", "an", "example"));
     }
 }
