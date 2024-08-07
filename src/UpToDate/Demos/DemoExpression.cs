@@ -1,4 +1,7 @@
-﻿namespace UpToDate.Demos;
+﻿using System.Collections.Generic;
+using static System.Formats.Asn1.AsnWriter;
+
+namespace UpToDate.Demos;
 
 internal class DemoExpression
 {
@@ -67,5 +70,38 @@ internal class DemoExpression
         Console.WriteLine(expressions.LambdaNaturalType("3"));
         Console.WriteLine(expressions.LambdaNaturalTypeReturn(false));
         Console.WriteLine(expressions.LambdaAttribute("2"));
+        Console.WriteLine(expressions.ShowCustomAttribute());
+
+        Console.WriteLine(expressions.InterpolatedRawStringLiterals());
+
+        Console.WriteLine(expressions.InterpolatedSeveralLines(50));
+
+        int[] numbers = { 1, 2, 3 };
+
+        Console.WriteLine(numbers is [1, 2, 3]);  // True
+        Console.WriteLine(numbers is [1, 2, 4]);  // False
+        Console.WriteLine(numbers is [1, 2, 3, 4]);  // False
+        Console.WriteLine(numbers is [0 or 1, <= 2, >= 3]);  // True
+
+
+        if (numbers is [var first, _, _])
+        {
+            Console.WriteLine($"The first element of a three-item list is {first}.");
+        }
+
+        string longMessage = """
+    This is a long message.
+    It has several lines.
+        Some are indented
+                more than others.
+    Some should start at the first column.
+    Some have "quoted text" in them.
+    """;
+
+        Console.WriteLine(longMessage);
+
+        Console.WriteLine(expressions.Scoped());
+
+        //Console.WriteLine(expressions.ParamsCollection("This", "is", "an", "example"));
     }
 }

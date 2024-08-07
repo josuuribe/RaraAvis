@@ -1,4 +1,7 @@
-﻿namespace UpToDate.Helpers;
+﻿using System.Runtime.CompilerServices;
+using System.Security;
+
+namespace UpToDate.Helpers;
 
 public class Name
 {
@@ -23,4 +26,9 @@ public class Building : IDisposable
     {
         Age = 0;
     }
+}
+
+public class EmpireState(decimal height, decimal weight) : Building
+{
+    public EmpireState(decimal height, decimal weight, string address) : this(height, weight) { }
 }

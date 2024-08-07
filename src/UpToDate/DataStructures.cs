@@ -64,4 +64,15 @@ public class DataStructures
     {// This method can only be called by parent in the same assembly
         return "Private protected".ToLower();
     }
+
+    public ArrayBuffer GetBuffer()
+    {
+        var buffer = new ArrayBuffer();
+        for (int i = 0; i < 10; i++)
+        {
+            buffer[i] = i;
+        }
+
+        return buffer;
+    }
 }

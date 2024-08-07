@@ -317,7 +317,59 @@ public class Expressions
 
     public int LambdaAttribute(string s)
     {// C# 10
-        var lambdaAttribute = [Custom("lambda attribute 1")] [return: Custom("Lamdba return")]int ([Custom("Parameter attribute")]string s) => int.Parse(s);
+        var lambdaAttribute = [Custom("lambda attribute 1")][return: Custom("Lamdba return")] int ([Custom("Parameter attribute")] string s) => int.Parse(s);
         return lambdaAttribute(s);
     }
+
+#pragma warning disable DiagID
+    [GenericCustom<string>()]
+    public string ShowCustomAttribute()
+    {
+        return "Custom operation string";
+    }
+
+    public string InterpolatedRawStringLiterals()
+    {
+        int X = 2;
+        int Y = 3;
+
+        return $"""The point "{X}, {Y}" is {Math.Sqrt(X * X + Y * Y):F3} from the origin""";
+    }
+
+    public string InterpolatedSeveralLines(int safetyScore)
+    {
+        return $"The usage policy for {safetyScore} is {safetyScore switch
+        {
+            > 90 => "Unlimited usage",
+            > 80 => "General usage, with daily safety check",
+            > 70 => "Issues must be addressed within 1 week",
+            > 50 => "Issues must be addressed within 1 day",
+            _ => "Issues must be addressed before continued use",
+        }}";
+    }
+
+    ref struct Test
+    {
+        public string TestMethod(scoped ReadOnlySpan<char> characters)
+        {
+            // The body of the method must only use characters in the local scope, and cannot assign it directly to any field or classes unles they themselves would be scoped.
+            return characters.ToString();
+        }
+    }
+
+    public string Scoped()
+    {
+        Span<char> values = stackalloc char[3] { 'T', 'o', 'm' };
+        return new Test().TestMethod(values);
+    }
+
+    //public string ParamsCollection(params IEnumerable<string> values)
+    //{
+    //    string result = string.Empty;
+    //    foreach (var value in values)
+    //    {
+    //        result += string.Empty + value;
+    //    }
+    //    return result;
+    //}
 }

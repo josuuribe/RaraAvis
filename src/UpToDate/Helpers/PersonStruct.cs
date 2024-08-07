@@ -27,3 +27,9 @@ public struct Address
 
     public override string ToString() => $"{Street} ({Number}) in {Distance}";
 }
+
+[System.Runtime.CompilerServices.InlineArray(10)]
+public struct ArrayBuffer
+{
+    private int _element0;
+}
