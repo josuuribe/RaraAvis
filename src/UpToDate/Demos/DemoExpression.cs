@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using static System.Formats.Asn1.AsnWriter;
-
-namespace UpToDate.Demos;
+﻿namespace UpToDate.Demos;
 
 internal class DemoExpression
 {
