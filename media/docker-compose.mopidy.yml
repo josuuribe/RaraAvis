@@ -1,0 +1,28 @@
+version: "3"
+services:
+  mopidy:
+    container_name: mopidy
+    image: joursain/rpi-mopidy
+    #build:
+      #context: ..
+      #dockerfile: media/mopidy/Dockerfile.mopidy
+    ports:
+      - "6680:6680"
+    volumes:
+      - ${MOPIDY_CONFIG}:/mnt/mopidy/config
+      - ${MOPIDY_LOCAL}:/mnt/mopidy/local
+    environment:
+      - RA_UUID=1000
+      - RA_GUID=1000
+      - RA_SRVC=mopidy
+      - RA_FLDR=/mnt/mopidy
+    devices:
+      - /dev/snd
+    healthcheck:
+#      test: ["CMD-SHELL", "curl -f http://spotify.etxe.local || bash -c 'kill -s 15 -1 && (sleep 10; kill -s 9 -1)'"]
+      test: ["CMD-SHELL", "curl -f http://spotify.etxe.local || bash -c '/etc/init.d/mopidy restart'"]
+      interval: 30m
+      timeout: 10s
+      retries: 3
+      start_period: 45s
+    restart: unless-stopped

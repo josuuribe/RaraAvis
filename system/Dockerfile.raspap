@@ -1,0 +1,29 @@
+#FROM arm32v7/debian:bullseye
+FROM balenalib/raspberrypi3-debian:bullseye
+
+
+ARG	DEBIAN_FRONTEND=noninteractive
+ARG	INSTALL_OPENVPN=0
+ARG	INSTALL_ADBLOCK=0
+
+RUN	apt update && apt install -y \
+	bind9-host \
+	rfkill \
+	lsb-release \
+	wireless-tools \
+	iw \
+	wpasupplicant \
+	sudo \
+	wget \
+	procps \ 
+	curl && rm -rf /var/lib/apt/lists/* 
+
+#	systemd && rm -rf /var/lib/apt/lists/*
+
+RUN	curl -sL https://install.raspap.com | bash -s -- --yes --openvpn $INSTALL_OPENVPN --adblock $INSTALL_ADBLOCK
+
+VOLUME	/etc/dnsmasq
+
+COPY entrypoint.sh /usr/local/bin
+CMD ["/usr/local/bin/entrypoint.sh"]
+#CMD ["lighttpd", "-D", "-f", "/etc/lighttpd/lighttpd.conf"]
