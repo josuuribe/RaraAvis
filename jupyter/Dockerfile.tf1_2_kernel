@@ -2,14 +2,13 @@ FROM joursain/raspberry-jupyterlab:latest
 ARG TF1
 ARG TF2
 
-# 6. Create virtual environments
+# 1. Create virtual environments
 SHELL ["/bin/bash", "-c"]
 
 RUN mkdir /mnt/jupyter/tf1 # https://github.com/moby/moby/issues/36677
 WORKDIR /mnt/jupyter/tf1
 COPY $TF1 /mnt/jupyter/tf1
 
-#RUN python3 -m pip config set global.extra-index-url https://www.piwheels.org/simple
 RUN python3 -m pip config list
 
 RUN python3 -m venv env 
@@ -31,31 +30,4 @@ RUN source env/bin/activate && \
 	ipykernel && \
         python3 -m ipykernel install --user --display-name='Python 3.7 TensorFlow 2' --name=envpy3tf2 && \
         deactivate
-
-#ENV VIRTUAL_ENV=/home/jupyter/notebooks/tf1
-#RUN python3.7 -m venv $VIRTUAL_ENV
-#ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-#RUN python3 -m pip install --upgrade pip
-#RUN python3 -m pip install --upgrade setuptools
-#RUN python3 -m pip install --upgrade wheel
-#RUN python3 -m pip install --no-cache-dir --force-reinstall grpcio
-#RUN python3 -m pip install ipykernel
-#RUN python3 -m pip install /tensorflow-1.14.0-cp37-none-linux_armv7l.whl
-#RUN python3 -m ipykernel install --user --display-name='Python 3.7 TensorFlow 1.4' --name=envpy37tf14
-
-#RUN mkdir /home/jupyter/notebooks/tf2
-#WORKDIR /home/jupyter/notebooks/tf2
-#ENV VIRTUAL_ENV=/home/jupyter/tf2
-#RUN python3.8 -m venv $VIRTUAL_ENV
-#ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-#RUN python3 -m pip install --upgrade pip
-#RUN python3 -m pip install --upgrade setuptools
-#RUN python3 -m pip install --upgrade wheel
-#RUN python3 -m pip install --no-cache-dir --force-reinstall grpcio
-#RUN python3 -m pip install ipykernel
-#RUN python3 -m pip install /tensorflow-2.4.0rc0-cp38-none-linux_armv7l.whl
-#RUN python3 -m ipykernel install --user --display-name='Python 3.8 TensorFlow 2.4rc4' --name=envpy38tf24rc4
-
-# 6. Execute jupyter
-#CMD ["jupyter", "lab", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--allow-root", "--notebook-dir=/home/jupyter/notebooks", "--NotebookApp.token=''", "--NotebookApp.password=''"]
 
