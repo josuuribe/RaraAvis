@@ -1,37 +1,59 @@
 version: "3"
 services:
-  mopidy:
-    container_name: mopidy
-    image: joursain/raspberry-mopidy
-    #build:
-      #context: ..
-      #dockerfile: media/mopidy/Dockerfile.mopidy
-    ports:
-      - "6680:6680"
-    volumes:
-      - ${MOPIDY_CONFIG}:/mnt/mopidy/config
-      - ${MOPIDY_LOCAL}:/mnt/mopidy/local
+#  mopidy:
+#    container_name: mopidy
+#    image: joursain/rpi-mopidy
+#    #build:
+#      #context: ..
+#      #dockerfile: media/mopidy/Dockerfile.mopidy
+#    ports:
+#      - "6680:6680"
+#    volumes:
+#      - ${MOPIDY_CONFIG}:/mnt/mopidy/config
+#      - ${MOPIDY_LOCAL}:/mnt/mopidy/local
+#    environment:
+#      - RA_UUID=1000
+#      - RA_GUID=1000
+#      - RA_SRVC=mopidy
+#      - RA_FLDR=/mnt/mopidy
+#    devices:
+#      - /dev/snd
+#    healthcheck:
+##      test: ["CMD-SHELL", "curl -f http://spotify.etxe.local || bash -c 'kill -s 15 -1 && (sleep 10; kill -s 9 -1)'"]
+#      test: ["CMD-SHELL", "curl -f http://spotify.etxe.local || bash -c '/etc/init.d/mopidy restart'"]
+#      interval: 30m
+#      timeout: 10s
+#      retries: 3
+#      start_period: 45s
+#    restart: unless-stopped
+#  kodi:
+#    container_name: kodi
+#    image: joursain/rpi-kodi
+#    build:
+#      context: ..
+#      dockerfile: kodi/Dockerfile.kodi
+#    volumes:
+
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    network_mode: "host"  # Permite detectar dispositivos UPnP/DLNA sin problemas
     environment:
-      - RA_UUID=1000
-      - RA_GUID=1000
-      - RA_SRVC=mopidy
-      - RA_FLDR=/mnt/mopidy
-    devices:
-      - /dev/snd
-    healthcheck:
-#      test: ["CMD-SHELL", "curl -f http://spotify.etxe.local || bash -c 'kill -s 15 -1 && (sleep 10; kill -s 9 -1)'"]
-      test: ["CMD-SHELL", "curl -f http://spotify.etxe.local || bash -c '/etc/init.d/mopidy restart'"]
-      interval: 30m
-      timeout: 10s
-      retries: 3
-      start_period: 45s
-    restart: unless-stopped
+      - PUID=1000  # Ajusta según el usuario que ejecuta Docker
+      - PGID=1000  # Ajusta según el grupo
+      - TZ=Europe/Madrid  # Ajusta a tu zona horaria
+    volumes:
+      - ${JELLYFIN_MEDIA}:/media  # Ruta donde tienes tus vídeos, música, etc.
+      - ${JELLYFIN_CONFIG}:/config  # Carpeta donde se guardará la configuración
+      - ${JELLYFIN_CACHE}:/cache  # Carpeta para caché de imágenes y metadatos
+    restart: unless-stopped      
+
   transmission:
     container_name: transmission
-    image: joursain/raspberry-transmission
-   #build:
-     #context: ..
-     #dockerfile: media/transmission/Dockerfile.transmission
+    image: joursain/rpi-transmission
+    build:
+      context: ..
+      dockerfile: transmission/Dockerfile.transmission
     ports:
       - "9091:9091"
       - "51413:51413"
@@ -40,23 +62,25 @@ services:
       - ${TRANSMISSION_TEMP}:/mnt/transmission/temp
       - ${TRANSMISSION_DOWNLOAD}:/mnt/transmission/download
       - ${TRANSMISSION_WATCH}:/mnt/transmission/watch
+      - /dev/shm:/data/transcode
     environment:
       - RA_UUID=1000
       - RA_GUID=1000
       - RA_SRVC=debian-transmission
       - RA_FLDR=/mnt/transmission
-  plex:
-    container_name: plex
-    image: ghcr.io/linuxserver/plex
-    container_name: plex
-    network_mode: host
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - VERSION=docker
- #- PLEX_CLAIM= see .env file  
-    volumes:
-      - ${PLEX_CONFIG}:/config
-   #- /mnt/media/plex/tv:/tv      
-      - ${PLEX_MOVIES}:/movies
     restart: unless-stopped
+#  plex:
+#    container_name: plex
+#    image: ghcr.io/linuxserver/plex
+#    container_name: plex
+#    network_mode: host
+#    environment:
+#      - PUID=1000
+#      - PGID=1000
+#      - VERSION=docker
+# #- PLEX_CLAIM= see .env file  
+#    volumes:
+#      - ${PLEX_CONFIG}:/config
+#   #- /mnt/media/plex/tv:/tv      
+#      - ${PLEX_MOVIES}:/movies
+#    restart: unless-stopped

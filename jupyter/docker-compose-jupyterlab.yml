@@ -9,6 +9,5 @@ services:
     ports:
       - "8888:8888"
     volumes:
-      - ${NOTEBOOKS_FOLDER}:/home/jupyter/notebooks
-      - ${JUPYTER_FOLDER}:/home/jupyter
+      - ${JUPYTERLAB_FOLDER}:/home/jupyter
     restart: unless-stopped

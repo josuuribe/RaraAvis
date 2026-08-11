@@ -1,9 +1,9 @@
 # 0. Official armv32 image
-FROM debian:latest
+FROM debian:buster-slim
 
 LABEL "guru.raraavis.creator"="blog@raraavis.guru"
-LABEL "guru.raraavis.version"="1.0.0"
-LABEL "guru.raraavis.release-date"="20/03/2021"
+LABEL "guru.raraavis.version"="2.0.0"
+LABEL "guru.raraavis.release-date"="25/09/2022"
 LABEL "guru.raraavis.description"="Raspberry Pi 3 image with Mopidy"
 
 # 1. Environment vars
@@ -33,9 +33,9 @@ RUN	apt-get update && \
                 rm -rf /tmp/*
 
 # 3. Add mopidy repository
-RUN	wget -q -O - https://apt.mopidy.com/mopidy.gpg | apt-key add -
-RUN	DEBIAN_CODENAME=`lsb_release -sc` && \
-	wget -vO /etc/apt/sources.list.d/mopidy.list "https://apt.mopidy.com/$DEBIAN_CODENAME.list"
+RUN	mkdir -p /usr/local/share/keyrings
+RUN	wget -q -O /usr/local/share/keyrings/mopidy-archive-keyring.gpg  https://apt.mopidy.com/mopidy.gpg
+RUN	wget -q -O /etc/apt/sources.list.d/mopidy.list https://apt.mopidy.com/buster.list
 
 # 4. Install pip packages and Mopidy
 RUN	apt-get update && \
@@ -60,6 +60,7 @@ RUN	echo "mopidy ALL=NOPASSWD: /usr/local/lib/python3.7/dist-packages/mopidy_iri
 WORKDIR /mnt/mopidy
 RUN	mkdir /mnt/mopidy/data
 RUN	mkdir /mnt/mopidy/cache
+RUN	mkdir /mnt/mopidy/logs
 COPY    scripts/ scripts/
 
 # 7. Configuration local scan

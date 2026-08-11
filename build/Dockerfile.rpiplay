@@ -1,19 +1,28 @@
 FROM balenalib/rpi-raspbian:buster
 
 ARG DEBIAN_FRONTEND=noninteractive
-ARG DEBIAN_FRONTEND=noninteractive
 ARG REPO_HOME=/repos
+ENV REPO_HOME=$REPO_HOME
+
 RUN     apt-get update && apt-get install -y \
 		cmake \
 		libavahi-compat-libdnssd-dev \
 		libplist-dev \
 		libgstreamer1.0-dev \
 		libssl-dev \
+                libx264-dev \
+                libjpeg-dev \
+                libgstreamer-plugins-base1.0-dev \
+                libgstreamer-plugins-bad1.0-dev \
+                gstreamer1.0-plugins-ugly \
+                gstreamer1.0-tools \
+                gstreamer1.0-gl \
+                gstreamer1.0-gtk3 \
 		build-essential \
 		g++ \
 		gcc \
                 git \
-git-svn \
+		git-svn \
                 ccache && \
                 rm -rf /var/lib/apt/lists/* && \
                 rm -rf /tmp/*
@@ -32,8 +41,6 @@ RUN	make
 RUN	make install
 
 WORKDIR $REPO_HOME/drop
-RUN	tar -cvzf $REPO_HOME/drop/rpiplay.tar.gz $REPO_HOME/RPiPlay
+RUN	tar -czvf $REPO_HOME/drop/rpiplay.tar.gz $REPO_HOME/RPiPlay
 
-ENV REPO_HOME=$REPO_HOME
 ENTRYPOINT	echo "Copy $REPO_HOME/rpiplay.tar.gz from docker and extract to host at $REPO_HOME and execute make install in $REPO_HOME/RpiPlay/build"
-

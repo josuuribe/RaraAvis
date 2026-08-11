@@ -13,6 +13,6 @@ docker run \
 -v /usr/bin/tvservice:/usr/bin/tvservice \
 -p 8080:8080 \
 -p 9777:9777/udp \
-joursain/kodi2
+joursain/kodi
 
 
